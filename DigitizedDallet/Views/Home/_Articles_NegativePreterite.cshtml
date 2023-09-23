@@ -1,0 +1,15 @@
+﻿@model IEnumerable<ArticleModel>
+@foreach (var form in Model)
+{
+    @Html.ActionLink(form, prefix: "ur ")<!--
+ -->
+    @if (form.Note != null)
+    {
+        <text> (@form.Resolved.Note)</text>
+    }
+
+    @if (Model.Last() != form)
+    {
+        <text> / </text>
+    }
+}

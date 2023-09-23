@@ -1,0 +1,158 @@
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@model AmyagPage
+@{  
+    var viewModel = new AmyagConjugationViewModel(Model);
+}
+<div>
+    @if (viewModel.ShowImperative
+    || viewModel.ShowAorist
+    || viewModel.ShowPreterite
+    || viewModel.ShowNegativePreterite)
+    {
+        <table class="cTable">
+            <tr>
+                <th style="text-align:center" colspan="5">@viewModel.Name</th>
+            </tr>
+
+            <tr>
+                <th style="text-align:center"></th>
+                @if (viewModel.ShowImperative)
+                {
+                    <th style="text-align:center">@Localizer["$Imperative"] </th>
+                }
+                @if (viewModel.ShowAorist)
+                {
+                    <th style="text-align:center">@Localizer["$Aorist"]</th>
+                }
+                @if (viewModel.ShowPreterite)
+                {
+                    <th style="text-align:center">@Localizer["$Preterite"]</th>
+                }
+                @if (viewModel.ShowNegativePreterite)
+                {
+                    <th style="text-align:center">@Localizer["$NegativePreterite"]</th>
+                }
+            </tr>
+
+            <tbody>
+                @foreach (var line in viewModel.Lines)
+                {
+                    <tr>
+                        <td>@line.Pronoun</td>
+                        @if (viewModel.ShowImperative)
+                        {
+                            <td>@line.Imperative</td>
+                        }
+                        @if (viewModel.ShowAorist)
+                        {
+                            <td>@line.Aorist</td>
+                        }
+                        @if (viewModel.ShowPreterite)
+                        {
+                            <td>@line.Preterite</td>
+                        }
+                        @if (viewModel.ShowNegativePreterite)
+                        {
+                            <td>@line.NegativePreterite</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <p />
+
+    @if (!string.IsNullOrWhiteSpace(viewModel.AoristParticiple)
+    || !string.IsNullOrWhiteSpace(viewModel.PreteriteParticiple)
+    || !string.IsNullOrWhiteSpace(viewModel.NegativePreteriteParticiple))
+    {
+        <table class="cTable">
+            <tr>
+                <th style="text-align:center" colspan="3">@Localizer["$Participle"]</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">@Localizer["$Aorist"]</th>
+                <th style="text-align:center">@Localizer["$Preterite"]</th>
+                <th style="text-align:center">@Localizer["$NegativePreterite"]</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>@viewModel.AoristParticiple</td>
+                    <td>@viewModel.PreteriteParticiple</td>
+                    <td>@viewModel.NegativePreteriteParticiple</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</div>
+
+@if (Model.IntensiveForms.Any())
+{
+    <h2>@Localizer["$Intensive"]</h2>
+
+    @foreach (var intensiveSectionViewModel in viewModel.IntensiveSections)
+    {   
+        <p />
+        <div>
+            <table class="cTable">
+                <tr>
+                    <th style="text-align:center" colspan="3">@intensiveSectionViewModel.Name</th>
+                </tr>
+
+                <tr>
+                    <th style="text-align:center"></th>
+                    <th style="text-align:center">@Localizer["$IntensiveImperative"]</th>
+                    <th style="text-align:center">@Localizer["$IntensiveAorist"]</th>
+                </tr>
+
+                <tbody>
+                    @foreach (var line in intensiveSectionViewModel.Lines)
+                    {
+                        <tr>
+                            <td>@line.Pronoun</td>
+                            <td>@line.IntensiveImperative</td>
+                            <td>@line.IntensiveAorist</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <p />
+
+            <table class="cTable">
+                <tr>
+                    <th style="text-align:center" colspan="2">@Localizer["$Participle"]</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">@Localizer["$Positive"]</th>
+                    <th style="text-align:center">@Localizer["$Negative"]</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>@intensiveSectionViewModel.IntensiveAoristParticiple</td>
+                        <td>@intensiveSectionViewModel.NegativeIntensiveAoristParticiple</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    }
+}
+
+
+<p>
+    <ul>
+        <li>
+            @(Model.IsIrregular ? @Localizer["$IrregularVerb"] : @Localizer["$RegularVerb"])<!--
+            -->@if (Model.Pattern is not null)
+            {
+                <text>, @Localizer["$pattern"]</text>
+                <a href="@Url.Action("Article", "Home", new { name = Model.Pattern.Verb })#@Model.Pattern.Id">@Model.Pattern.Verb</a>
+                <text>  (@Model.Pattern.Number)</text>
+            }
+            @(Model.IsDerived ? "- " + @Localizer["$Derived"] : "")
+            [Manuel de conjugaison kabyle, Kamal Naït-Zerrad, L'Harmattan, 1994]
+        </li>
+    </ul>
+</p>

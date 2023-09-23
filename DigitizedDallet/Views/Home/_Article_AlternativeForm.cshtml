@@ -1,0 +1,58 @@
+﻿@model ArticleModel
+@{
+    bool hasForms = Model.Conjugations.SelectMany(x=> x.AllForms).Any() || Model.VerbalNouns.Any() || Model.PluralForms.Any() || Model.FeminineForms.Any() || Model.FemininePluralForms.Any() || Model.SingularForms.Any();
+}<!--
+-->@Html.ActionLink(Model)<!--
+-->@if (Model.Note != null)
+{
+    <text> (@Html.RenderWikiMarkup(@Model.Note))</text>
+}
+@if (hasForms)
+{
+    <text> (</text>
+}
+@foreach (var conjugation in Model.Conjugations)
+{<!--
+ --><partial name="_Article_Conjugation" for="@conjugation" /><!--
+ -->}
+@if (Model.VerbalNouns.Any())
+{   
+    <text> -</text>    
+    <partial name="_Articles" for="VerbalNouns" /><!--
+ -->}
+@if (Model.PluralForms.Any())
+{
+    <text>👥: </text>
+    <partial name="_ArticlesSeparatedBySlash" for="PluralForms" /><!--
+ -->}
+@if (Model.PluralForms.Any() && Model.FeminineForms.Any())
+{
+    <text>, </text>
+}
+@if (Model.FeminineForms.Any())
+{   
+    <text>♀: </text>        
+    <partial name="_ArticlesSeparatedBySlash" for="FeminineForms" /><!--
+ -->}
+@if ((Model.PluralForms.Any() || Model.FeminineForms.Any()) && Model.FemininePluralForms.Any())
+{
+    <text>, </text>
+}
+@if (Model.FemininePluralForms.Any())
+{   
+    <text>♀♀♀: </text>    
+    <partial name="_ArticlesSeparatedBySlash" for="FemininePluralForms" /><!--
+ -->}
+@if ((Model.PluralForms.Any() || Model.FeminineForms.Any()) && Model.FemininePluralForms.Any() && Model.SingularForms.Any())
+{
+    <text>, </text>
+}
+@if (Model.SingularForms.Any())
+{   
+    <text>👤: </text>    
+    <partial name="_ArticlesSeparatedBySlash" for="SingularForms" /><!--
+ -->}
+@if (hasForms)
+{
+    <text>)</text>
+}

@@ -1,0 +1,31 @@
+﻿@model AmyagPage
+@{
+    ViewBag.Title = "Details";
+
+}
+<br />
+
+<h3>@Model.Name</h3>
+
+<style>
+
+    .cTable {
+        padding: 10px;
+        border: 1px solid black;
+    }
+
+        .cTable th {
+            padding-left: 5px;
+            padding-right: 5px;
+            border: 1px solid black;
+        }
+
+        .cTable td {
+            padding-left: 5px;
+            padding-right: 5px;
+            border: 1px solid black;
+        }
+
+</style>
+
+<partial name="~/views/conjugation/_details.cshtml" for="@Model" />

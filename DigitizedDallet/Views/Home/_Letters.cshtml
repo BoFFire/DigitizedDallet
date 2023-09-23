@@ -1,0 +1,24 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table">
+    <tr>
+        @foreach (var item in Model)
+        {
+            if (item == ViewBag.Letter)
+            {
+                <th>
+                    @item
+                </th>
+            }
+            else
+            {
+                <th>
+                    @Html.ActionLink(item, "Index", new { id = item })
+                </th>
+            }
+        }
+    </tr>
+</table>

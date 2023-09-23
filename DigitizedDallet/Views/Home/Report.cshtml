@@ -1,0 +1,142 @@
+﻿@model ReportViewModel
+
+@{
+    ViewData["Title"] = "Report";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+
+<h3>@Model.MainArticlesCount MainArticles</h3>
+
+<h3>
+    @Model.ArticlesCount Articles (declensions included) [@Model.ArticlesWithDalletNamesCount w/ dallet (@string.Format("{0:P2}", (double)Model.ArticlesWithDalletNamesCount / (double)Model.ArticlesCount)) @Model.ArticlesWithoutDalletNamesCount w/o dallet]
+</h3>
+
+<h3>@Model.DistinctArticlesCount DistinctArticles</h3>
+
+<h3>@Model.RedirectsCount Redirects</h3>
+
+<h3>@Model.ArticlesWithSubArticles.Count ArticlesWithSubArticles</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithSubArticles)
+    {
+        @Html.ActionLink(item, "Article", new { name = item })
+
+        @if (Model.ArticlesWithSubArticles.Last() != item)
+        {
+            <text>, </text>
+        }
+    }
+</p>
+
+<h3>@Model.ArticlesWithRedirectedSubArticles.Count ArticlesWithRedirectedSubArticles</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithRedirectedSubArticles)
+    {
+        @Html.ActionLink(item, "Article", new { name = item })
+
+        @if (Model.ArticlesWithRedirectedSubArticles.Last() != item)
+        {
+            <text>, </text>
+        }
+    }
+</p>
+
+<h3>@Model.ArticlesWithSubMeanings.Count ArticlesWithSubMeanings</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithSubMeanings)
+    {
+        @Html.ActionLink(item, "Article", new { name = item })
+
+        @if (Model.ArticlesWithSubMeanings.Last() != item)
+        {
+            <text>, </text>
+        }
+    }
+</p>
+
+<h3>@Model.ArticlesWithCases.Count ArticlesWithCases</h3>
+<p> 
+    @foreach (var item in Model.ArticlesWithCases)
+    {
+        @Html.ActionLink(item, "Article", new { name = item })
+
+        @if (Model.ArticlesWithCases.Last() != item)
+        {
+            <text>, </text>
+        }
+    }
+</p>
+
+<h3>@Model.ArticlesWithPunctuation.Count ArticlesWithPunctuation</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithPunctuation)
+    {
+        @Html.ActionLink(item, "Article", new { name = item })
+
+        @if (Model.ArticlesWithPunctuation.Last() != item)
+        {
+            <text>, </text>
+        }
+    }
+</p>
+
+<h3>@Model.ArticlesWithMark.Count ArticlesWithMark</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithMark)
+    {
+        @Html.ActionLink(item.Name, "Article", new { name = item.Name })  <font color="red">@item.Mark</font>
+        <!--
+        -->@if (Model.ArticlesWithMark.Last() != item)
+        {
+            <text>, </text>
+        }
+    }
+</p>
+
+<h3>@Model.ArticlesWithHyphen.Count ArticlesWithHyphen (Syntagma)</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithHyphen)
+    {
+        @Html.ActionLink(item, "Article", new { name = item })
+
+        @if (Model.ArticlesWithHyphen.Last() != item)
+        {
+            <text>, </text>
+        }
+    }
+</p>
+
+<h3>ArticlesWithMoreThanOneTranslation</h3>
+<p>@Model.ArticlesWithMoreThanOneTranslationCount</p>
+
+
+<h3>@Model.ArticlesWithMoreThanOneTranslationAndOnlyOneMeaning.Count ArticlesWithMoreThanOneTranslationAndOnlyOneMeaning</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithMoreThanOneTranslationAndOnlyOneMeaning.Take(100))
+    {
+        @Html.ActionLink(item.Name, "Article", new { name = item.Name })<text>, </text>        
+    }
+</p>
+
+<h3>@Model.ArticlesWithMoreThanOneTranslationAndOnlyOneMeaningAndOneExample.Count ArticlesWithMoreThanOneTranslationAndOnlyOneMeaningAndOneExample</h3>
+<p>
+    @foreach (var item in Model.ArticlesWithMoreThanOneTranslationAndOnlyOneMeaningAndOneExample.Take(100))
+    {
+        @Html.ActionLink(item.Name, "Article", new { name = item.Name })
+
+        <text>, </text>
+    }
+</p>
+
+
+
+<h3>@Model.InvalidLinks.Count Invalid links:</h3>
+<p>@string.Join(", ", Model.InvalidLinks)</p>
+
+<h3>@Model.InvalidTemplates.Count Invalid Templates:</h3>
+<p>@string.Join(", ", Model.InvalidTemplates)</p>
+
+<h3>@Model.ArticlesWithSpecialChars.Count ArticlesWithSpecialChars:</h3>
+<p>@string.Join(", ", Model.ArticlesWithSpecialChars)</p>

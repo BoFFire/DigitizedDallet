@@ -1,0 +1,166 @@
+﻿@model IEnumerable<EditableExampleModel>
+@{
+    ViewBag.Title = "Index";
+    var letters = (IEnumerable<string>)ViewBag.Letters;
+    var currentLetter = (string)ViewBag.Letter;
+}
+
+<table class="table">
+    <tr>
+        @foreach (var item in letters)
+        {
+            if (item == currentLetter)
+            {
+                <th>
+                    @item
+                </th>
+            }
+            else
+            {
+                <th>
+                    @Html.ActionLink(item, "Toggle", new { id = item })
+                </th>
+            }
+        }
+    </tr>
+</table>
+
+<h2>@Model.Count() @Html.ActionLink("xlsx", "Export",  new { id = currentLetter })</h2>
+<table class="table">
+    @foreach (var item in Model)
+    {   
+        <tr>
+            <td>
+                <a id="@item.Id" class="anchor" />
+                @Html.ActionLink(item.Id, "Edit",  new { id = item.Id })
+            </td>
+            <td>
+                @Html.RenderWikiMarkup(item.ArticleName)
+            </td>
+            <td>              
+                <div id="@item.Id">             
+                    <div style="display:none;">@item.Text!</div>
+                    @for (int i=0; i< item.New!.Length; i++)
+                    {<!--
+                        -->var c = item.New![i]; var c2 = item.Text![i]; var textColor = c==c2  ? "black" : "blue";<!--
+                        --><input type="button" value="@c" style="color: @textColor;padding: 0;border: none;background: none;font-size: 2.5em;" onclick="addDot(this)" /><!--
+                    -->}
+                </div>
+         
+                <small style="color:grey">@item.Translation 
+                    @if (item.Literal is not null) 
+                    { 
+                        <text>(</text>
+                        @item.Literal
+                        <text>)</text>
+                    }
+                </small>
+            </td>            
+        </tr>
+    }
+</table>
+
+<script>
+    function addDot(button) {
+        switch (button.value) {
+            /*case 'r': button.value = 'ṛ'; break;
+            case 'ṛ': button.value = 'r'; break;
+            case 'h': button.value = 'ḥ'; break;
+            case 'ḥ': button.value = 'h'; break;*/
+
+            case 'c': button.value = 'ċ'; break;
+            case 'ċ': button.value = 'c'; break;
+
+            case 'l': button.value = 'ḷ'; break;
+            case 'ḷ': button.value = 'l'; break;
+
+            case 's': button.value = 'ş'; break;
+            case 'ş': button.value = 's'; break;
+
+            case 'z': button.value = 'ž'; break;
+            case 'ž': button.value = 'z'; break;
+
+            case 'k': button.value = 'ḱ'; break;
+            case 'ḱ': button.value = 'ḵ'; break;
+            case 'ḵ': button.value = 'k'; break;
+
+            case 't': button.value = 'ṫ'; break;
+            case 'ṫ': button.value = 'ṯ'; break;
+            case 'ṯ': button.value = 't'; break;
+
+            case 'd': button.value = 'ḋ'; break;
+            case 'ḋ': button.value = 'ḏ'; break;
+            case 'ḏ': button.value = 'd'; break;
+
+            case 'b': button.value = 'ḃ'; break;
+            case 'ḃ': button.value = 'ḇ'; break;
+            case 'ḇ': button.value = 'b'; break;
+
+            case 'g': button.value = 'ġ'; break;
+            case 'ġ': button.value = 'g'; break;
+
+            case 'j': button.value = 'ɉ'; break;
+            case 'ɉ': button.value = 'j'; break;
+
+            case 'a': button.value = 'ᵃ'; break;
+            case 'ᵃ': button.value = 'a'; break;
+            case 'u': button.value = 'ᵘ'; break;
+            case 'ᵘ': button.value = 'u'; break;
+            case 'e': button.value = 'ᵉ'; break;
+            case 'ᵉ': button.value = 'e'; break;
+            case 'i': button.value = 'ⁱ'; break;
+            case 'ⁱ': button.value = 'i'; break;
+            case 'w': button.value = 'ʷ'; break;
+            case 'ʷ': button.value = 'w'; break;
+            default: return;
+        }        
+        
+        let inputs = button.parentElement.getElementsByTagName('input');
+
+        let originalText = button.parentElement.getElementsByTagName('div')[0].innerText;
+        let oldValue = originalText[Array.from(inputs).indexOf(button)];
+
+        button.style.color = button.value == oldValue ? "black" : "blue";        
+
+        let text = '';
+
+        for (i = 0; i < inputs.length; i++) {
+            text += inputs[i].value
+        }        
+
+        save(button.parentElement.getAttribute("id"), text);
+    }
+
+    function save(id, text) {
+        var formData = new FormData();
+        formData.append("id", id);
+        formData.append("Text", text);
+        
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ToggleEdit", "Example")',
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: formData,
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    function errorCallback() {
+        alert("Something went wrong please contact admin.");
+    }
+    function successCallback(response) {
+        /*if (response.responseCode == 0) {
+            resetForm();
+            alert(response.responseMessage, function () {
+
+                //PERFORM REMAINING LOGIC
+            });
+        }
+        else {
+            alert(response.ResponseMessage);
+        }*/
+    };
+</script>

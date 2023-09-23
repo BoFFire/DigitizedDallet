@@ -1,0 +1,76 @@
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@model MeaningModel
+
+<div style="margin-left:20px">
+
+    @if (Model.Case != null)
+    {
+        <h5> #@(Model.StringIndex) @Html.RenderWikiMarkup(Model.Case)</h5>
+    }
+    
+    @if (Model.Translations.Any())
+    {
+        @*<h4> #@(Model.StringIndex) @Localizer["$Meaning"]</h4>*@
+
+        <div>
+            @if (Model.Case is null)
+            {
+                <text>#@(Model.StringIndex)</text>
+            }
+
+            @foreach (var trans in Model.Translations)
+            {
+                <text> ‖ </text>
+
+                @Html.RenderWikiMarkup(trans)
+            }
+
+            @if (Model.Note != null)
+            {
+                <small>(@Html.RenderWikiMarkup(Model.Note))</small>
+            }
+        </div>
+    }
+
+    @if (Model.WikidataId is not null)
+    {
+        <a href="https://www.wikidata.org/wiki/@Model.WikidataId">@Localizer["$WikidataItem"]</a>        
+    }
+
+@*    <ul style="list-style-type:disc">
+
+        @foreach (var translation in Model.Translations)
+        {
+            @if (Model.SameAs != null)
+            {
+                <li>(@translation) @Model.SameAs.FirstTranslation</li>
+            }
+            else
+            {
+                <li>@Html.DisplayFor2(translation)</li>
+            }
+        }
+
+        @if (Model.Note != null)
+        {
+            <text>(@Html.DisplayFor2(Model.Note))</text>
+        }
+    </ul>*@
+
+
+    @if (Model.Examples.Any())
+    {   
+        <partial name="_ArticleMeaningExamples" for="@Model" />
+    }
+
+    @foreach (var meaning in Model.Meanings)
+    {
+        <partial name="_ArticleMeaning" for="@meaning" />
+    }
+
+</div>
+
+
+
+
+

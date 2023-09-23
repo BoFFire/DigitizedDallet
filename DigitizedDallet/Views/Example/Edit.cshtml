@@ -1,0 +1,196 @@
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@model EditableExampleModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>@Model.Text</h2>
+<hr />
+
+<div class="form-horizontal">     
+    
+        <div class="form-group">
+            <div class="col-md-10">
+                <small style="color:grey">
+                    @Model.Translation 
+                    @if (Model.Literal is not null)
+                    {
+                        <text>(</text>
+                        @Model.Literal
+                        <text>)</text>
+                    }
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                
+                <input type="button" value="ḍ" class="btn btn-default" onclick="addLetter(this)" />
+                
+                <input type="button" value="ḥ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ḷ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ṛ" class="btn btn-default" onclick="addLetter(this)" />
+            
+                <input type="button" value="ṣ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ṭ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ẓ" class="btn btn-default" onclick="addLetter(this)" />
+
+                <input type="button" value="ċ (c̣)" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ɉ (j̣)" class="btn btn-default" onclick="addLetter(this)" />
+                
+                <br />
+
+                <input type="button" value="ɣ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ɛ" class="btn btn-default" onclick="addLetter(this)" />   
+
+                
+                <br />
+                <input type="button" value="č (ç)" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ǧ (j&#813;)" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ţ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ž (z̧)" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ş" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ṥ (ş̣)" class="btn btn-default" onclick="addLetter(this)" />               
+                
+
+
+                <br />
+                <input type="button" value="ḵ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ṯ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ḇ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ḏ" class="btn btn-default" onclick="addLetter(this)" />
+
+                <br />
+                <input type="button" value="ḃ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ḋ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ṫ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ġ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ḱ (k̇)" class="btn btn-default" onclick="addLetter(this)" />
+
+                <br />
+
+                <input type="button" value="ʷ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ᵃ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ⁱ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ᵘ" class="btn btn-default" onclick="addLetter(this)" />
+                <input type="button" value="ᵉ" class="btn btn-default" onclick="addLetter(this)" />
+            </div>
+        </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">        
+            <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Text, new { @class = "form-control text-box multi-line", style = "max-width:100% !important;", autocomplete="off", rows="5", autocorrect="off", autocapitalize="off", spellcheck="false" })
+                    @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Localizer["$Save"]" class="btn btn-default" />
+            </div>
+        </div>
+    }
+  
+</div>
+
+
+<p>   
+
+    @Html.ActionLink(@Localizer["$Previous"], "Edit", new { id = (int.Parse(Model.Id) - 1) })
+
+    <b> - </b>    
+   
+    @Html.ActionLink(@Localizer["$Next"], "Edit", new { id = (int.Parse(Model.Id) + 1) })
+
+
+</p>
+
+<p> 
+    <a href="@Url.Action("Index", "Example", new { id= Model.Letter })#@Model.Id">@Localizer["$BackToList"]</a>
+</p>
+
+<script>
+    let myField = document.getElementById("Text");
+    myField.focus();
+    myField.selectionStart = myField.value.length;
+    myField.selectionEnd = myField.value.length;
+
+    function addLetter(button) {        
+
+        let myValue = button.value.substring(0, 1);
+
+        if (myField.selectionStart || myField.selectionStart == '0') {
+            var startPos = myField.selectionStart;
+            var endPos = myField.selectionEnd;
+            myField.value = myField.value.substring(0, startPos)
+                + myValue
+                + myField.value.substring(endPos, myField.value.length);
+
+            myField.focus();
+            myField.selectionStart = startPos + 1;
+            myField.selectionEnd = startPos + 1;
+        } else {            
+            myField.value += myValue;
+            myField.focus();
+        }                
+    }  
+    const caretKey = 221; // code key for the "^"
+    const transformedChars = {
+        z: "ẓ",
+        r: "ṛ",
+        t: "ṭ",
+        q: "ɣ",
+        s: "ṣ",
+        d: "ḍ",
+        g: "ǧ",
+        h: "ḥ",
+        w: "ɛ",
+        c: "č",        
+    };
+
+    window.onkeydown = transformText;
+
+    var previousKeyCode = null;
+
+    function transformText(event) {
+
+        const keyPressed = event.key;
+        let inputField = document.activeElement;
+
+        if (inputField == null) {
+            return;
+        }
+
+        if (previousKeyCode === caretKey && transformedChars.hasOwnProperty(keyPressed)) {
+            event.preventDefault(); // Prevent the caret symbol from being inserted
+            setTimeout(() => {
+                if (inputField.selectionStart || inputField.selectionStart == '0') {
+                    var startPos = inputField.selectionStart;
+                    var endPos = inputField.selectionEnd;
+                    inputField.value = inputField.value.substring(0, startPos).slice(0, -1)
+                        + transformedChars[keyPressed]
+                        + inputField.value.substring(endPos, inputField.value.length);
+
+                    inputField.focus();
+                    inputField.selectionStart = startPos;
+                    inputField.selectionEnd = startPos;
+
+                } else {
+                    inputField.value = inputField.value.slice(0, -1) + transformedChars[keyPressed]
+                }
+            }, 0);   // let the input box render the text, 0 ms is enough
+        }
+
+        previousKeyCode = event.keyCode;
+    }
+
+</script>
