@@ -15,7 +15,7 @@ public static class WikiHelper
               .Replace("ɉ", "j̣")
               .Replace("ṥ", "ş̣")
               .Replace("ž", "z̧")
-              .Replace("ż", "ż̧")
+              .Replace("ż", "ẓ̧")
               .Replace("ḓ", "ḏ̣");
     
 

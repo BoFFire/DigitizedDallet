@@ -45,7 +45,7 @@ a.anchor {
 
 @font-face {
     font-family: "Cascadia Code";
-    src: url(CascadiaCode.ttf);
+    src: url(CascadiaCode.woff2) format('woff2');
 }
 
 body {
