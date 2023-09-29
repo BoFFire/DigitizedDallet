@@ -160,41 +160,21 @@ public partial class ArticleModel
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     private int IndexInDoc => Root.Letter.Doc.MainArticles.IndexOf(this);
 
-    [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
-    public ArticleModel? NextEntry
-    {
-        get
-        {
-            if (Root == null || FormOf != null)
-                return null;
+    [System.Text.Json.Serialization.JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
+    public ArticleModel? NextEntry => Root == null
+                || FormOf != null
+                || IndexInDoc >= Root.Letter.Doc.MainArticles.Count - 1
+                ? null
+                : Root.Letter.Doc.MainArticles[IndexInDoc + 1];
 
-            int count = Root.Letter.Doc.MainArticles.Count;
-
-            if (IndexInDoc >= count - 1)
-            {
-                return null;
-            }
-
-            return Root.Letter.Doc.MainArticles[IndexInDoc + 1];
-        }
-    }
-
-    [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
-    public ArticleModel? PreviousEntry
-    {
-        get
-        {
-            if (Root == null || FormOf != null)
-                return null;
-
-            if (IndexInDoc < 1)
-            {
-                return null;
-            }
-
-            return Root.Letter.Doc.MainArticles[IndexInDoc - 1];
-        }
-    }
+    [System.Text.Json.Serialization.JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
+    public ArticleModel? PreviousEntry => Root == null
+                || FormOf != null
+                || IndexInDoc < 1
+                ? null
+                : Root.Letter.Doc.MainArticles[IndexInDoc - 1];
 
 
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]

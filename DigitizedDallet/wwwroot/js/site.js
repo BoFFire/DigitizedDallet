@@ -3,6 +3,26 @@
 
 // Write your JavaScript code.
 
+function quickFix(id) {
+    var formData = new FormData();
+    formData.append("id", id);
+
+    $.ajax({
+        type: 'POST',
+        url: '/Home/QuickFix',
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: formData,
+        success: function (data) {
+            location.reload();
+        },
+        error: function () {
+            alert("Something went wrong please contact admin.");
+        }
+    });
+}
+
 function addDallet(id) {
     var formData = new FormData();
     formData.append("id", id);    
@@ -44,6 +64,9 @@ function toggleLetter(button) {
 
         case 'z': button.value = 'ž'; break;
         case 'ž': button.value = 'z'; break;
+
+        case 'ẓ': button.value = 'ż'; break;
+        case 'ż': button.value = 'ẓ'; break;
 
         case 'k': button.value = 'ḱ'; break;
         case 'ḱ': button.value = 'ḵ'; break;

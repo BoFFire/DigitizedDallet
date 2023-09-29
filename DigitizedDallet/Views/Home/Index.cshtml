@@ -1,9 +1,9 @@
 ﻿@inject IStringLocalizer<SharedResources> Localizer
 @model LetterModel
-@{
-    ViewBag.Title = "Index";
+@{  
     var letters = (IEnumerable<string>)ViewBag.Letters;
     var currentLetter = (string)ViewBag.Letter;
+    ViewBag.Title = currentLetter + " — Index";
 }
 
 <partial name="_Letters" for="@letters" />

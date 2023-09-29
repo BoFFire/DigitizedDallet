@@ -7,6 +7,21 @@ namespace DigitizedDallet.Helpers;
 
 public static class MyHtmlHelperLinkExtensions
 {
+    public static IHtmlContent ActionLink(this IHtmlHelper helper, RootModel root)
+    {
+        var language = helper.ViewBag.RequestedLanguage;
+
+        return helper.ActionLink(root.Name,
+            nameof(HomeController.Index),
+            nameof(HomeController).Remove(nameof(HomeController).Length - "Controller".Length),
+            protocol: null,
+            hostname: null,
+            fragment: root.Name,
+            routeValues: new { id = root.Letter.Name },
+            htmlAttributes: null);
+    }
+    
+
     public static IHtmlContent ActionLink(this IHtmlHelper helper,
         ArticleModel article,
         string? prefix = null,        
@@ -16,10 +31,12 @@ public static class MyHtmlHelperLinkExtensions
         bool withDalletEdit = true,
         bool useGuid = false)
     {
+        var language = helper.ViewBag.RequestedLanguage;
+
         var content = new HtmlContentBuilder().AppendHtml(helper.ActionLink(prefix + article.Resolved.Name,
                 nameof(HomeController.Article),
                 nameof(HomeController).Remove(nameof(HomeController).Length - "Controller".Length),
-                new { name = article.Resolved.Name, guid = useGuid ? article.Id : null }));
+                new { name = article.Resolved.Name, culture = language, guid = useGuid ? article.Id : null }));
 
         if (withMark && article.Resolved.Mark != null)
         {
@@ -52,6 +69,7 @@ public static class MyHtmlHelperLinkExtensions
             content.Append(" ");
             if (article.Resolved.DalletNames.Any())
             {
+                content.AppendHtml($"""<input type="button" style="color: red;" value=">" onclick="quickFix('{article.Resolved.Id}')" />""");
                 content.AppendHtml("""<span style="font-size: 2.5em; white-space: nowrap;">""");
                 content.Append("[");
                 for (int i = 0; i < article.Resolved.DalletNames.Count; i++)
@@ -72,7 +90,7 @@ public static class MyHtmlHelperLinkExtensions
                     }
                 }
                 content.Append("]");
-                content.AppendHtml("""</span>""");
+                content.AppendHtml("""</span>""");                
             }
             else
             {

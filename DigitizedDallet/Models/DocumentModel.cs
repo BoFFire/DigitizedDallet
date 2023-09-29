@@ -3,7 +3,8 @@
 public class DocumentModel
 {
     public ReadmeModel Readme { get; set; } = new ReadmeModel();
-    public Dictionary<string, string> Abbreviations { get; set; } = new Dictionary<string, string>();
+    public NonUnicodeCharacterSet NonUnicodeCharacterSet { get; set; } = new NonUnicodeCharacterSet();
+    public Dictionary<string, string> Abbreviations { get; set; } = new Dictionary<string, string>();    
     public List<LetterModel> Letters { get; set; } = new List<LetterModel>();
 
     private List<ArticleModel>? _Articles;

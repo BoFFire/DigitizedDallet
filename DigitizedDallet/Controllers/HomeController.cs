@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using DigitizedDallet.Models;
 using DigitizedDallet.Utils;
 using DigitizedDallet.ViewModels;
+using Microsoft.AspNetCore.Localization;
 
 namespace DigitizedDallet.Controllers;
 
 public class HomeController : Controller
 {
     static public DocumentModel Doc => DicoRepository.Doc;
+    public string RequestedLanguage => Request.HttpContext.Features.Get<IRequestCultureFeature>()?.RequestCulture.Culture.Name ?? "en";
 
     public IActionResult About()
     {
@@ -43,6 +45,7 @@ public class HomeController : Controller
         }
 
         ViewBag.Letters = Doc.Letters.Select(x => x.Name).ToList();
+        ViewBag.RequestedLanguage = this.RequestedLanguage;
 
         return View(Doc.Letters.Where(x => x.Name == id).First());
     }
@@ -72,6 +75,8 @@ public class HomeController : Controller
         {
             return NotFound();
         }
+
+        ViewBag.RequestedLanguage = this.RequestedLanguage;
 
         return View(articles);
     }
@@ -225,7 +230,41 @@ public class HomeController : Controller
 
         DicoRepository.Save();
 
-        return RedirectToAction("Article", "Home", new { name = stored_article.Name });
+        return RedirectToAction("Article", "Home", new { name = stored_article.Name, culture = RequestedLanguage });
+    }
+
+    [HttpPost]
+    public ActionResult QuickFix(string? id)
+    {
+        var stored_article = DicoRepository.Doc.Articles.SingleOrDefault(x => x.Id == id);
+
+        if (stored_article == null)
+        {
+            return NotFound();
+        }
+
+        if (stored_article.DalletNames.Count != 1)
+        {
+            return BadRequest();
+        }
+
+        var dalletName = stored_article.DalletNames.First();
+
+        if (dalletName.Contains("tţ"))
+        {
+            dalletName = dalletName.Replace("tţ", "ţ");
+        }
+        else
+        {
+            dalletName = "e" + dalletName;
+        }
+
+
+        stored_article.DalletNames = new List<string> { dalletName };
+
+        DicoRepository.QuickSave();
+
+        return Ok();
     }
 
 

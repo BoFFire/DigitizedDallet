@@ -15,6 +15,17 @@ public class ReadmeModel
         "occlusives are missing in example.dalletText",
         "restore all article.dalletNames",
         "create articles for annexed state",
-        "combine origin w/ biliography or create congnate list"
+        "combine origin w/ biliography or create cognate list"
     };
+}
+
+public class NonUnicodeCharacterSet
+{
+    public string C_WITH_DOT_BELOW { get; set; } = "ċ";
+    public string K_WITH_DOT_ABOVE { get; set; } = "ḱ";
+    public string J_WITH_DOT_BELOW { get; set; } = "ɉ";
+    public string Z_WITH_CEDILLA_BELOW { get; set; } = "ž";
+    public string Z_WITH_CEDILLA_AND_DOT_BELOW { get; set; } = "ż";
+    public string S_WITH_CEDILLA_AND_DOT_BELOW { get; set; } = "ṥ";
+    public string D_WITH_LINE_AND_DOT_BELOW { get; set; } = "ḓ";
 }

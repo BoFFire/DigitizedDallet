@@ -1,4 +1,5 @@
-﻿using DigitizedDallet.Utils;
+﻿using DigitizedDallet.Models;
+using DigitizedDallet.Utils;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
@@ -10,15 +11,13 @@ public static class WikiHelper
     public static IEnumerable<string> ToDalletNotation(this IEnumerable<string> ls) => ls.Select(x => x.ToDalletNotation());
 
     public static string ToDalletNotation(this string text) =>
-        text.Replace("ċ", "c̣")
-              .Replace("ḱ", "k̇")
-              .Replace("ɉ", "j̣")
-              .Replace("ṥ", "ş̣")
-              .Replace("ž", "z̧")
-              .Replace("ż", "ẓ̧")
-              .Replace("ḓ", "ḏ̣");
-    
-
+        text.Replace(DicoRepository.Doc.NonUnicodeCharacterSet.C_WITH_DOT_BELOW, "c̣")
+              .Replace(DicoRepository.Doc.NonUnicodeCharacterSet.K_WITH_DOT_ABOVE, "k̇")
+              .Replace(DicoRepository.Doc.NonUnicodeCharacterSet.J_WITH_DOT_BELOW, "j̣")
+              .Replace(DicoRepository.Doc.NonUnicodeCharacterSet.S_WITH_CEDILLA_AND_DOT_BELOW, "ş̣")
+              .Replace(DicoRepository.Doc.NonUnicodeCharacterSet.Z_WITH_CEDILLA_BELOW, "z̧")
+              .Replace(DicoRepository.Doc.NonUnicodeCharacterSet.Z_WITH_CEDILLA_AND_DOT_BELOW, "ẓ̧")
+              .Replace(DicoRepository.Doc.NonUnicodeCharacterSet.D_WITH_LINE_AND_DOT_BELOW, "ḏ̣");
 
     public static IHtmlContent RenderWikiMarkup(this IHtmlHelper htmlHelper, string? text)
     {
@@ -49,13 +48,13 @@ public static class WikiHelper
     public static IHtmlContent RenderPureWikiMarkup(this IHtmlHelper htmlHelper, HtmlContentBuilder content, string text)
     {   
 
-        foreach (var innerLinks in GetTuples(text, '[', ']')) // Wikilinks
+        foreach (var innerLink in GetTuples(text, '[', ']')) // Wikilinks
         {
-            if (innerLinks.Success)
+            if (innerLink.Success)
             {
-                if (innerLinks.Value.Contains(':'))
+                if (innerLink.Value.Contains(':'))
                 {
-                    var splitted = innerLinks.Value.Split(':');
+                    var splitted = innerLink.Value.Split(':');
                     var namespace_link = splitted.First();
                     var value_link = splitted.Skip(1).FirstOrDefault() ?? string.Empty;
 
@@ -78,21 +77,21 @@ public static class WikiHelper
                 else
                 {
                     content.AppendHtml("<i>");
-                    content.AppendHtml(htmlHelper.ActionLink(innerLinks.Value, "Article", new { name = innerLinks.Value }));
+                    content.AppendHtml(htmlHelper.ActionLink(new ArticleModel { Name = innerLink.Value }, withDalletEdit: false));
                     content.AppendHtml("</i>");
                 }
             }
             else
             {
-                foreach (var italicsTuples in GetTuples(innerLinks.Value, '\'', '\''))
+                foreach (var italicsTuple in GetTuples(innerLink.Value, '\'', '\''))
                 {
-                    if (italicsTuples.Success)
+                    if (italicsTuple.Success)
                     {
-                        content.AppendHtml($"<i>{italicsTuples.Value}</i>");
+                        content.AppendHtml($"<i>{italicsTuple.Value}</i>");
                     }
                     else
                     {
-                        foreach (var templateTuples in GetTuples(italicsTuples.Value, '{', '}'))
+                        foreach (var templateTuples in GetTuples(italicsTuple.Value, '{', '}'))
                         {
                             if (templateTuples.Success)
                             {
