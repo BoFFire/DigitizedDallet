@@ -3,7 +3,7 @@
  
 This project involves the digitization and [structuring](https://en.wikipedia.org/wiki/Data_modeling) of the **J.M. DALLET Kabyle-French dictionary**, a posthumous work authored by [Jean-Marie DALLET](https://www.wikidata.org/wiki/Q117833370) (1909 – 1972). The dictionary was completed and published in 1982 by [Madeleine ALLAIN](https://www.wikidata.org/wiki/Q25691511), Jacques LANFRY, and Pieter REESINK, preserving the original author's sole attribution.
 
-All the data is consolidated into a single file named : [dictionary.json](https://github.com/sferhah/DigitizedDallet/blob/master/DigitizedDallet/wwwroot/dictionary.json). As the file extension implies, the process goes beyond mere digitization; it encompasses a thorough data modeling effort.
+All the data is consolidated into a single file named: [dictionary.json](https://github.com/sferhah/DigitizedDallet/blob/master/DigitizedDallet/wwwroot/dictionary.json). As the file extension implies, the process goes beyond mere digitization; it encompasses a thorough data modeling effort.
 
 This repository contains the source code for a web-based version of the JSON file, accessible at: [digitized-dallet.com](http://digitized-dallet.com).
 
