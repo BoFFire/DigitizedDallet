@@ -72,15 +72,13 @@
             <dt>@Localizer["$See"]</dt>
             <dd>@Html.RenderWikiMarkup(Model.See)</dd>
         }
-        @if (Model.Origin != null)
+        @if (Model.EtymologicalReferences.Any())
         {
-            <dt>@Localizer["$Origin"]</dt>
-            <dd>@Html.RenderWikiMarkup(Model.Origin)</dd>
-        }
-        @if (Model.Bibliography != null)
-        {
-            <dt>@Localizer["$Bibliography"]</dt>
-            <dd>@Html.RenderWikiMarkup(Model.Bibliography)</dd>
+            <dt>@Localizer["$EtymologicalReferences"]</dt>
+            foreach (var etymologicalReference in Model.EtymologicalReferences)
+            {
+                <dd>@Html.RenderWikiMarkup(etymologicalReference)</dd>
+            }
         }
 
         @foreach (var conjugation in Model.Conjugations)

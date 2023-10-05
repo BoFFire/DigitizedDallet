@@ -119,67 +119,64 @@ public class HomeController : Controller
             return View(entry);
         }
 
-        var stored_entry = Doc.Articles.SingleOrDefault(x => x.Id == entry.Id);
+        var stored_article = Doc.Articles.SingleOrDefault(x => x.Id == entry.Id);
 
-        if (stored_entry == null)
+        if (stored_article == null)
         {
             return NotFound();
         }
 
-        stored_entry.Annexation = entry.Annexation;
-        stored_entry.Prefix = entry.Prefix;
-        stored_entry.Name = entry.Name;
-        stored_entry.Nature = entry.Nature;
-        stored_entry.Note = entry.Note;
-        stored_entry.Gender = entry.Gender;
-        stored_entry.Info = entry.Info;
-        stored_entry.Origin = entry.Origin;
+        stored_article.Annexation = entry.Annexation;
+        stored_article.Prefix = entry.Prefix;
+        stored_article.Name = entry.Name;
+        stored_article.Nature = entry.Nature;
+        stored_article.Note = entry.Note;
+        stored_article.Gender = entry.Gender;
+        stored_article.Info = entry.Info;
 
-        stored_entry.See = entry.See;
-        stored_entry.Bibliography = entry.Bibliography;
+        stored_article.See = entry.See;
 
         if (!string.IsNullOrEmpty(entry.RedirectToId?.Trim()))
         {
-            var target_entry = Doc.Articles.SingleOrDefault(x => x.Id == entry.RedirectToId);
+            var target_article = Doc.Articles.SingleOrDefault(x => x.Id == entry.RedirectToId);
 
-            if (target_entry == null)
+            if (target_article == null)
             {
                 return NotFound();
             }
 
-            stored_entry.RedirectToId = entry.RedirectToId;
+            stored_article.RedirectToId = entry.RedirectToId;
 
-            stored_entry.Duplicates = 0;
-            target_entry.Duplicates -= 1;
+            stored_article.Duplicates = 0;
+            target_article.Duplicates -= 1;
 
 
-            stored_entry.Annexation = null;
-            stored_entry.Prefix = null;
-            stored_entry.Nature = null;
-            stored_entry.Note = null;
-            stored_entry.Gender = null;
-            stored_entry.Info = null;
-            stored_entry.Origin = null;
+            stored_article.Annexation = null;
+            stored_article.Prefix = null;
+            stored_article.Nature = null;
+            stored_article.Note = null;
+            stored_article.Gender = null;
+            stored_article.Info = null;
+            stored_article.See = null;
 
-            stored_entry.See = null;
-            stored_entry.Bibliography = null;
+            stored_article.EtymologicalReferences.Clear();
 
-            stored_entry.Conjugations.Clear();
-            stored_entry.Meanings.Clear();
-            stored_entry.AlternativeForms.Clear();
-            stored_entry.SubArticles.Clear();
-            stored_entry.PluralForms.Clear();
-            stored_entry.FemininePluralForms.Clear();
-            stored_entry.FeminineForms.Clear();
-            stored_entry.SingularForms.Clear();
-            stored_entry.DalletNames.Clear();
-            stored_entry.VerbalNouns.Clear();
+            stored_article.Conjugations.Clear();
+            stored_article.Meanings.Clear();
+            stored_article.AlternativeForms.Clear();
+            stored_article.SubArticles.Clear();
+            stored_article.PluralForms.Clear();
+            stored_article.FemininePluralForms.Clear();
+            stored_article.FeminineForms.Clear();
+            stored_article.SingularForms.Clear();
+            stored_article.DalletNames.Clear();
+            stored_article.VerbalNouns.Clear();
         }
 
 
         DicoRepository.Save();
 
-        return View(stored_entry);
+        return View(stored_article);
 
     }
 
@@ -212,10 +209,10 @@ public class HomeController : Controller
         stored_article.Nature = null;
         stored_article.Note = null;
         stored_article.Gender = null;
-        stored_article.Info = null;
-        stored_article.Origin = null;
+        stored_article.Info = null;        
         stored_article.See = null;
-        stored_article.Bibliography = null;
+
+        stored_article.EtymologicalReferences.Clear();
 
         stored_article.Conjugations.Clear();
         stored_article.Meanings.Clear();

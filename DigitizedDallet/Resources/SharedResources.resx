@@ -138,6 +138,9 @@
   <data name="$Derived" xml:space="preserve">
     <value>Derived</value>
   </data>
+  <data name="$EtymologicalReferences" xml:space="preserve">
+    <value>Etymological references</value>
+  </data>
   <data name="$Examples" xml:space="preserve">
     <value>Examples</value>
   </data>
@@ -194,9 +197,6 @@
   </data>
   <data name="$Next:" xml:space="preserve">
     <value>Next:</value>
-  </data>
-  <data name="$Origin" xml:space="preserve">
-    <value>Origin</value>
   </data>
   <data name="$Participle" xml:space="preserve">
     <value>Participle</value>

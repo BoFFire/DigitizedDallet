@@ -17,7 +17,8 @@ public partial class ArticleModel
 
     public string? Info { get; set; }
     public string? Note { get; set; }
-    public string? Origin { get; set; }
+    
+    public List<string> EtymologicalReferences { get; set; } = new List<string>();
 
     public List<ConjugationModel> Conjugations { get; set; } = new List<ConjugationModel>();
 
@@ -29,7 +30,7 @@ public partial class ArticleModel
     public List<ArticleModel> SingularForms { get; set; } = new List<ArticleModel>();
 
     public string? See { get; set; }
-    public string? Bibliography { get; set; }
+    
 
     public string? Compound { get; set; }
     public string? Gender { get; set; }

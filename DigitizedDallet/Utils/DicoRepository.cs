@@ -17,9 +17,9 @@ public class DicoRepository
 
                 foreach (var w in _doc.Articles)
                 {
-                    foreach (var conjugations in w.Conjugations.Where(x => x.AmiagId is not null))
+                    foreach (var conjugations in w.Conjugations.Where(x => x.AmyagId is not null))
                     {
-                        conjugations.AmyagPage = AmyagPages.Single(x => x.Id == conjugations.AmiagId);
+                        conjugations.AmyagPage = AmyagPages.Single(x => x.Id == conjugations.AmyagId);
                     }
                 }
             }
@@ -42,12 +42,13 @@ public class DicoRepository
 
     public static void Save()
     {
-        File.WriteAllText(DictionaryFilePath, CustomJsonSerializer.Serialize(Doc));
+        QuickSave();
         _doc = null;
     }
 
     public static void QuickSave()
     {
+        Doc.Readme.LastModificationDate = DateTime.Now;
         File.WriteAllText(DictionaryFilePath, CustomJsonSerializer.Serialize(Doc));
     }
 
