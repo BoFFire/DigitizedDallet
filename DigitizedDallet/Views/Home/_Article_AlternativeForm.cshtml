@@ -2,7 +2,7 @@
 @{
     bool hasForms = Model.Conjugations.SelectMany(x=> x.AllForms).Any() || Model.VerbalNouns.Any() || Model.PluralForms.Any() || Model.FeminineForms.Any() || Model.FemininePluralForms.Any() || Model.SingularForms.Any();
 }<!--
--->@Html.ActionLink(Model)<!--
+-->◆ @Html.ActionLink(Model)<!--
 -->@if (Model.Note != null)
 {
     <text> (@Html.RenderWikiMarkup(@Model.Note))</text>

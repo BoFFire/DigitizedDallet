@@ -113,25 +113,25 @@
         @if (Model.PluralForms.Any())
         {
             <dt>@Localizer["$PluralForms"]</dt>
-            <dd><partial name="_Articles" for="PluralForms" /></dd>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="PluralForms" /></dd>
         }
 
         @if (Model.FeminineForms.Any())
         {
-            <dt>@Localizer["$FeminineForms"]</dt>            
-            <dd><partial name="_Articles" for="FeminineForms" /></dd>
+            <dt>@Localizer["$FeminineForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="FeminineForms" /></dd>
         }
 
         @if (Model.SingularForms.Any())
         {
-            <dt>@Localizer["$SingularForms"]</dt>            
-            <dd><partial name="_Articles" for="SingularForms" /></dd>
+            <dt>@Localizer["$SingularForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="SingularForms" /></dd>
         }
 
         @if (Model.FemininePluralForms.Any())
         {
-            <dt>@Localizer["$FemininePluralForms"]</dt>            
-            <dd><partial name="_Articles" for="FemininePluralForms" /></dd>
+            <dt>@Localizer["$FemininePluralForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="FemininePluralForms" /></dd>
         }
 
         @if (Model.AlternativeForms.Any())
@@ -140,11 +140,8 @@
             <dd>
                 @foreach (var form in Model.AlternativeForms)
                 {   
-                    <partial name="_Article_AlternativeForm" for="@form" /><!--
-                 -->@if (Model.AlternativeForms.Last() != form)
-                    {
-                        <text>, </text>
-                    }
+                    <partial name="_Article_AlternativeForm" for="@form" />
+                    <br />
                 }
             </dd>
         }

@@ -29,4 +29,9 @@ public class DocumentModel
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public List<ArticleModel> MainArticles => Letters.SelectMany(x => x.Roots).SelectMany(x => x.Articles).Where(x => !x.IsRedirected).ToList();
 
+    [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
+    public Dictionary<string, ArticleModel> ArticlesById { get; } = new Dictionary<string, ArticleModel>();
+
+    public ArticleModel? GetArticle(string id) => ArticlesById.TryGetValue(id, out var article) ? article : null;
+
 }

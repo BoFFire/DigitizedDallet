@@ -64,11 +64,20 @@ public class HomeController : Controller
 
         name = name.ToLower().Trim();
 
-        var articles = Doc.Articles.Where(x => x.Name == name && !x.IsRedirected).ToList();
+        var articles = Doc.Articles.Where(x => x.Name == name && !x.IsRedirected);
 
         if (!string.IsNullOrWhiteSpace(guid))
-        {
-            articles = articles.Where(x => x.Id == guid).ToList();
+        {   
+            var article = Doc.GetArticle(guid);
+
+            if (article != null)
+            {
+                articles = new List<ArticleModel> { article };                
+            }
+            else
+            {
+                articles = Enumerable.Empty<ArticleModel>();
+            }
         }
 
         if (!articles.Any())
@@ -100,52 +109,52 @@ public class HomeController : Controller
             return new BadRequestResult();
         }
 
-        var entry = Doc.Articles.SingleOrDefault(x => x.Id == id);
-
-        if (entry == null)
-        {
-            return NotFound();
-        }
-
-        return View(entry);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit(ArticleModel entry)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(entry);
-        }
-
-        var stored_article = Doc.Articles.SingleOrDefault(x => x.Id == entry.Id);
+        var stored_article = Doc.GetArticle(id);
 
         if (stored_article == null)
         {
             return NotFound();
         }
 
-        stored_article.Annexation = entry.Annexation;
-        stored_article.Prefix = entry.Prefix;
-        stored_article.Name = entry.Name;
-        stored_article.Nature = entry.Nature;
-        stored_article.Note = entry.Note;
-        stored_article.Gender = entry.Gender;
-        stored_article.Info = entry.Info;
+        return View(stored_article);
+    }
 
-        stored_article.See = entry.See;
-
-        if (!string.IsNullOrEmpty(entry.RedirectToId?.Trim()))
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Edit(ArticleModel article)
+    {
+        if (!ModelState.IsValid)
         {
-            var target_article = Doc.Articles.SingleOrDefault(x => x.Id == entry.RedirectToId);
+            return View(article);
+        }
+
+        var stored_article = Doc.GetArticle(article.Id);
+
+        if (stored_article == null)
+        {
+            return NotFound();
+        }
+
+        stored_article.Annexation = article.Annexation;
+        stored_article.Prefix = article.Prefix;
+        stored_article.Name = article.Name;
+        stored_article.Nature = article.Nature;
+        stored_article.Note = article.Note;
+        stored_article.Gender = article.Gender;
+        stored_article.Info = article.Info;
+
+        stored_article.See = article.See;
+
+        if (!string.IsNullOrEmpty(article.RedirectToId?.Trim()))
+        {
+            var target_article = Doc.Articles.SingleOrDefault(x => x.Id == article.RedirectToId);
 
             if (target_article == null)
             {
                 return NotFound();
             }
 
-            stored_article.RedirectToId = entry.RedirectToId;
+            stored_article.RedirectToId = article.RedirectToId;
 
             stored_article.Duplicates = 0;
             target_article.Duplicates -= 1;
@@ -186,8 +195,13 @@ public class HomeController : Controller
         {
             return new BadRequestResult();
         }
+        
+        var stored_article = Doc.GetArticle(id);
 
-        var stored_article = Doc.Articles.Single(x => x.Id == id);
+        if (stored_article == null)
+        {
+            return NotFound();
+        }
 
         var target_article = Doc.Articles
             .FirstOrDefault(x => x.Name == stored_article.Name
@@ -231,9 +245,9 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public ActionResult QuickFix(string? id)
+    public ActionResult QuickFix(string id)
     {
-        var stored_article = DicoRepository.Doc.Articles.SingleOrDefault(x => x.Id == id);
+        var stored_article = Doc.GetArticle(id);        
 
         if (stored_article == null)
         {
@@ -266,9 +280,9 @@ public class HomeController : Controller
 
 
     [HttpPost]
-    public ActionResult AddDallet(string? id)
+    public ActionResult AddDallet(string id)
     {
-        var stored_article = DicoRepository.Doc.Articles.SingleOrDefault(x => x.Id == id);
+        var stored_article = Doc.GetArticle(id);        
 
         if (stored_article == null)
         {
@@ -290,7 +304,7 @@ public class HomeController : Controller
         var id = ids[0];
         var index = int.Parse(ids[1]);
 
-        var stored_article = DicoRepository.Doc.Articles.SingleOrDefault(x => x.Id == id);
+        var stored_article = Doc.GetArticle(id);        
 
         if (stored_article == null)
         {

@@ -33,8 +33,7 @@ public class DicoParser
             }
         }
 
-
-        Dictionary<string, string> dico = new Dictionary<string, string>();
+        var redirectedArticles = new List<ArticleModel>();
 
         foreach (var entry in doc.Articles)
         {
@@ -42,9 +41,8 @@ public class DicoParser
             //{
             //    e.Meanings.FirstOrDefault().SameAs = doc.Articles.Single(x => x.Id == e.Meanings.FirstOrDefault().SameAsId);                    
             //}
-           
 
-            dico.Add(entry.Id, entry.Name);
+            doc.ArticlesById.Add(entry.Id, entry);
 
             entry.Meanings.ForEach(x => x.AssignParent());
             entry.Meanings.ForEach(x => x.Article = entry);
@@ -100,21 +98,43 @@ public class DicoParser
             foreach (var form in entry.PluralForms)
             {
                 form.PluralFormOf = entry;
+
+                if (form.AlternativeForms.Any())
+                {
+                    throw new Exception();
+                }
+
             }
 
             foreach (var form in entry.FemininePluralForms)
             {
                 form.FemininePluralFormOf = entry;
+
+                if (form.AlternativeForms.Any())
+                {
+                    throw new Exception();
+                }
+
             }
 
             foreach (var form in entry.FeminineForms)
             {
                 form.FeminineFormOf = entry;
+
+                if (form.AlternativeForms.Any())
+                {
+                    throw new Exception();
+                }
             }
 
             foreach (var form in entry.SingularForms)
             {
                 form.SingularFormOf = entry;
+
+                if (form.AlternativeForms.Any())
+                {
+                    throw new Exception();
+                }
             }
 
             foreach (var form in entry.VerbalNouns)
@@ -127,7 +147,7 @@ public class DicoParser
                 foreach (var form in conjugation.IntensiveThirdSingularForms)
                 {
                     form.IntensiveThirdSingularFormOf = entry;
-                }                
+                }
                 foreach (var form in conjugation.IntensiveThirdPluralForms)
                 {
                     form.IntensiveThirdPluralFormOf = entry;
@@ -176,17 +196,6 @@ public class DicoParser
                 }
             }
 
-
-            if (!string.IsNullOrWhiteSpace(entry.RedirectToId))
-            {
-                entry.RedirectTo = doc.Articles.Single(x => x.Id == entry.RedirectToId);
-
-                if (entry.AlternativeForms.Any())
-                {
-                    throw new Exception("Redirects must not have AlternativeForms");
-                }
-            }
-
             if (!string.IsNullOrWhiteSpace(entry.Prefix)
                 && entry != entry.Root.Articles.First())
             {
@@ -197,7 +206,29 @@ public class DicoParser
                     form.PrefixedArticle = entry.PrefixedArticle;
                 }
             }
+
+            if (!string.IsNullOrWhiteSpace(entry.RedirectToId))
+            {
+                if (entry.AlternativeForms.Any())
+                {
+                    throw new Exception("Redirects must not have AlternativeForms");
+                }
+
+                if (entry.Info is not null)
+                {
+                    throw new Exception("redirectedArticles' Info must be null");
+                }
+
+                if (entry.Note is not null)
+                {
+                    throw new Exception("redirectedArticles' Note must be null");
+                }
+
+                redirectedArticles.Add(entry);
+            }
         }
+
+        redirectedArticles.ForEach(x => x.RedirectTo = doc.ArticlesById[x.RedirectToId!]);
 
         return doc;
     }

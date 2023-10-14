@@ -106,7 +106,7 @@ public static class AmyagScraper
         }     
 
         var notes = content.SelectSingleNode(".//ul[@class='notes']/li/strong");
-        var regularity = notes.FirstChild.GetDeEntitizedInnerText();
+        var regularityAndDerivation = notes.FirstChild.GetDeEntitizedInnerText();
 
         var span = notes.SelectSingleNode(".//span");
 
@@ -124,23 +124,25 @@ public static class AmyagScraper
 
             if (span.NextSibling != null)
             {
-                regularity += span.NextSibling.GetDeEntitizedInnerText();
+                regularityAndDerivation += span.NextSibling.GetDeEntitizedInnerText();
             }
         }
 
-        var rr = regularity.Split('-', StringSplitOptions.RemoveEmptyEntries);
+        var regularityAndDerivationArray = regularityAndDerivation.Split('-', StringSplitOptions.RemoveEmptyEntries);
      
-        var _regularity = rr[0].Trim();        
+        var regularity = regularityAndDerivationArray.First().Trim();        
 
-        if (_regularity != "verbe irrégulier"
-            && _regularity != "verbe régulier"
-            && _regularity != "strong verb"
-            && _regularity != "amyag arlugan")
+        if (regularity != "verbe irrégulier"
+            && regularity != "verbe régulier"
+           /* && _regularity != "strong verb"
+            && _regularity != "weak verb"
+            && _regularity != "amyag arlugan"
+            && _regularity != "amyag alugan"*/)
         {
             throw new Exception();
         }
 
-        var _derivation = rr.Length > 1 ? rr[1].Trim() : null;
+        var derivation = regularityAndDerivationArray.Skip(1).FirstOrDefault()?.Trim();
 
         //if (_derivation is not null
         //    && _derivation != "dérivé")
@@ -148,8 +150,8 @@ public static class AmyagScraper
         //    throw new Exception();
         //}
 
-        amyagPage.IsIrregular = _regularity == "verbe irrégulier" || _regularity == "strong verb" || _regularity == "amyag arlugan";
-        amyagPage.IsDerived = _derivation is not null;
+        amyagPage.IsIrregular = regularity == "verbe irrégulier" || regularity == "strong verb" || regularity == "amyag arlugan";
+        amyagPage.IsDerived = derivation is not null;
         amyagPage.HasDirectionalParticle = (amyagPage.Imperative?.GetAll() ?? Enumerable.Empty<string>())
             .Concat(amyagPage.Preterite?.GetAll() ?? Enumerable.Empty<string>())
             .Any(x=> x.Contains('-'));

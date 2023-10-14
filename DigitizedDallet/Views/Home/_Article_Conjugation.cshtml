@@ -90,5 +90,5 @@
 }
 @if (Model.Note != null)
 {
-    <text> (@Model.Note)</text>
+    <text> (@Html.RenderWikiMarkup(Model.Note))</text>
 }
