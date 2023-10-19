@@ -1,0 +1,19 @@
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@model IEnumerable<ArticleModel>
+@{
+    ViewBag.Title = Model.First().Name;
+    var entry_inf = Model.Count() > 1 ? "articles" : "article";
+}
+<br />
+
+<p>@(Model.Count()) @entry_inf for : <b>@Html.DisplayFor(model => model.First().Name)</b></p>
+
+
+@foreach (var item in Model)
+{   
+    <partial name="_Article" for="@item" />
+}
+
+<p>
+    @Html.ActionLink(@Localizer["$BackToList"], "Index")
+</p>

@@ -1,0 +1,47 @@
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@model LetterModel
+@{  
+    var letters = (IEnumerable<string>)ViewBag.Letters;
+    var currentLetter = (string)ViewBag.Letter;
+    ViewBag.Title = currentLetter + " — Index";   
+    
+    var requestedScript = ViewBag.RequestedScript as string;
+}
+
+<partial name="_Letters" for="@letters" />
+
+<h2>@currentLetter : @Model.Roots.SelectMany(x => x.Articles).Count()</h2>
+
+<table class="table">
+    <tr>
+        <th>@Localizer["$Root"]</th>
+        <th>@Localizer["$Article"]</th>
+        <th>@Localizer["$Prefix"]</th>
+        <th>@Localizer["$Stem"]</th>
+        <th>@Localizer["$Translation"]</th>
+    </tr>
+
+    @foreach (var root in Model.Roots)
+    {
+        foreach (var item in root.Articles
+        @*.Where(x => x.Meanings.SelectMany(x => x.Translations).Any(y => y.Contains("[[")))*@
+        @*.Where(x => x.Meanings.SelectMany(x => x.Examples).Any(y => !string.IsNullOrWhiteSpace(y.Note)))*@
+        @*.Where(x => x.Meanings.Any(x => x.Translations.Count > 1))*@
+        @*.Where(x => !string.IsNullOrEmpty(x.See) && !x.See.Contains("[["))*@)
+        {
+            <tr>
+                @if (root.Articles.First() == item)
+                {
+                    <th rowspan="@root.Articles.Count.ToString()">
+                        <a id="@root.Name" class="anchor" />
+                        @Html.ActionLink(root.Name.GetTransliteratedString(requestedScript), "Index", "Article", protocol: null, hostname: null, fragment: root.Name, routeValues: new { id = root.Letter.Name }, htmlAttributes: null)
+                    </th>
+                }
+                
+                <partial name="_Index_Article" for="@item" />
+            </tr>
+        }
+    }
+</table>
+
+<partial name="_Letters" for="@letters" />

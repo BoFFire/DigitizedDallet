@@ -1,0 +1,116 @@
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@model ArticleModel
+
+@{
+    var bgcolor = Model.IsRedirected ? "azure" : "transparent";
+}
+
+<td nowrap bgcolor="@bgcolor">
+
+    @if (Model.Duplicates > 1)
+    {
+        <font color="red">@(Model.Duplicates - 1)</font>
+    }
+
+    @if (Model.IsRedirected)
+    {
+        <i>@Html.ActionLink(Model, withDalletEdit: false)</i>
+    }
+    else
+    {
+        <text>◆ </text> @Html.ActionLink(Model, withDalletEdit: false)
+
+        @if (Model.Resolved.AlternativeForms.Any())
+        {
+            <ul>
+                @foreach (var form in Model.Resolved.AlternativeForms)
+                {
+                    <li>
+                        @Html.ActionLink(form, withDalletEdit: false)
+                        @if (form.Duplicates > 1)
+                        {
+                            <font color="red">@(form.Duplicates - 1)</font>
+                        }
+                    </li>
+                }
+            </ul>
+        }        
+    }
+
+   
+
+</td>
+
+<td bgcolor="@bgcolor">
+    @if (Model.Prefix != null)
+    {
+        @Html.DisplayFor(model => Model.Prefix)
+    }
+</td>
+
+<td bgcolor="@bgcolor">
+    @if (Model.Prefix != null)
+    {
+        if (Model.PrefixedArticle != null)
+        {
+            @Html.ActionLink(Model.PrefixedArticle, withDallet: false, withMark:false)
+        }
+        else
+        {
+            <i>#NULL</i>
+        }
+    }
+</td>
+
+<td bgcolor="@bgcolor">
+
+    @if (Model.Resolved.Meanings.Any())
+    {
+        @foreach (var meaning in Model.Resolved.Meanings)
+        {
+            @foreach (var trans in meaning.Translations)
+            {
+                <div>‖ @Html.RenderWikiMarkup(trans)</div>
+            }
+
+            @if (meaning.Note != null)
+            {
+                <small>(@Html.RenderWikiMarkup(meaning.Note))</small>
+            }
+        }
+    }
+    else if (!string.IsNullOrWhiteSpace(Model.Resolved.Info))
+    {
+        <div>@Html.RenderWikiMarkup(Model.Resolved.Info)</div>
+    }
+    else if (!string.IsNullOrWhiteSpace(Model.Resolved.Note))
+    {
+        <div>@Html.RenderWikiMarkup(Model.Resolved.Note)</div>
+    }
+
+   @* @Html.DisplayFor2(Model.Resolved.FirstTranslation)*@
+
+    @foreach (var kvp in Model.Resolved.FormOfProperties)
+    {
+        if (kvp.Key == nameof(ArticleModel.SubArticleOf))
+        {
+            <small><i>@Localizer["$MainArticle:"]</i> @Html.ActionLink(kvp.Value, useGuid: true, withDalletEdit: false)</small>
+        }
+        else
+        {
+            <i>@Localizer[$"${kvp.Key}"]</i> @Html.ActionLink(kvp.Value, useGuid: true, withDalletEdit: false)
+
+            <text>: </text> @Html.RenderWikiMarkup(kvp.Value.FirstTranslation)
+        }
+
+    }
+
+    @if (Model.Resolved.See != null)
+    {
+        <br />
+        <b>@Html.RenderWikiMarkup(@Model.Resolved.See)</b>
+    }
+
+</td>
+
+

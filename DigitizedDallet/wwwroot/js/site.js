@@ -3,13 +3,30 @@
 
 // Write your JavaScript code.
 
+function reloadDictionary() {  
+
+    $.ajax({
+        type: 'GET',
+        url: '/en/Latn/Home/Reload',
+        contentType: false,
+        processData: false,
+        cache: false,
+        success: function (data) {
+            location.reload();
+        },
+        error: function () {
+            alert("Something went wrong please contact admin.");
+        }
+    });
+}
+
 function quickFix(id) {
     var formData = new FormData();
     formData.append("id", id);
 
     $.ajax({
         type: 'POST',
-        url: '/Home/QuickFix',
+        url: '/en/Latn/Article/QuickFix',
         contentType: false,
         processData: false,
         cache: false,
@@ -29,7 +46,7 @@ function addDallet(id) {
 
     $.ajax({
         type: 'POST',
-        url: '/Home/AddDallet',
+        url: '/en/Latn/Article/AddDallet',
         contentType: false,
         processData: false,
         cache: false,
@@ -124,7 +141,7 @@ function toggleLetter(button) {
 
     $.ajax({
         type: 'POST',
-        url: '/Home/ToggleEdit',
+        url: '/en/Latn/Article/ToggleEdit',
         contentType: false,
         processData: false,
         cache: false,

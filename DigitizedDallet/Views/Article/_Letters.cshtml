@@ -1,0 +1,26 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Index";
+    var requestedScript = ViewBag.RequestedScript as string;
+
+}
+
+<table class="table">
+    <tr>
+        @foreach (var item in Model)
+        {
+            if (item == ViewBag.Letter)
+            {
+                <th>
+                    @item.GetTransliteratedString(requestedScript)
+                </th>
+            }
+            else
+            {
+                <th>
+                    @Html.ActionLink(item.GetTransliteratedString(requestedScript), "Index", new { id = item })
+                </th>
+            }
+        }
+    </tr>
+</table>

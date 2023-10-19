@@ -184,5 +184,5 @@ public partial class ArticleModel
     public IEnumerable<ExampleModel> AllExamples => Meanings.SelectMany(x => x.AllExamples);
 
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
-    public int Duplicates { get; set; }
+    public int Duplicates { get; set; }  
 }

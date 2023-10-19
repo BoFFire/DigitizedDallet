@@ -33,14 +33,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><partial name="_LanguageSwitcher" /></li>                    
-                    <environment include="Development">                        
+                    <environment include="Development">          
+                        <li><partial name="_ScriptSwitcher" /></li>
                         <li><a asp-area="" asp-controller="Example" asp-action="Index">@Localizer["$Examples"]</a></li>
                         <li><a asp-area="" asp-controller="Example" asp-action="Toggle">@Localizer["$ToggleExamples"]</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Report">@Localizer["$Report"]</a></li>
                     </environment>
                     <li><a href="https://github.com/sferhah/DigitizedDallet" target="_blank">@Localizer["$About"]</a></li>
-                    <environment include="Development">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Reload">↻</a></li>
+                    <environment include="Development">                        
+                        <li><input type="button" value="↻" onclick="reloadDictionary()" /></li>
                     </environment>
                 </ul>
             </div>

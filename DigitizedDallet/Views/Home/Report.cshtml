@@ -21,7 +21,7 @@
 <p>
     @foreach (var item in Model.ArticlesWithSubArticles)
     {
-        @Html.ActionLink(item, "Article", new { name = item })
+        @Html.ActionLink(item, "Details", "Article", new { name = item })
 
         @if (Model.ArticlesWithSubArticles.Last() != item)
         {
@@ -34,7 +34,7 @@
 <p>
     @foreach (var item in Model.ArticlesWithRedirectedSubArticles)
     {
-        @Html.ActionLink(item, "Article", new { name = item })
+        @Html.ActionLink(item, "Details", "Article", new { name = item })
 
         @if (Model.ArticlesWithRedirectedSubArticles.Last() != item)
         {
@@ -47,7 +47,7 @@
 <p>
     @foreach (var item in Model.ArticlesWithSubMeanings)
     {
-        @Html.ActionLink(item, "Article", new { name = item })
+        @Html.ActionLink(item, "Details", "Article", new { name = item })
 
         @if (Model.ArticlesWithSubMeanings.Last() != item)
         {
@@ -60,7 +60,7 @@
 <p> 
     @foreach (var item in Model.ArticlesWithCases)
     {
-        @Html.ActionLink(item, "Article", new { name = item })
+        @Html.ActionLink(item, "Details", "Article", new { name = item })
 
         @if (Model.ArticlesWithCases.Last() != item)
         {
@@ -73,7 +73,7 @@
 <p>
     @foreach (var item in Model.ArticlesWithPunctuation)
     {
-        @Html.ActionLink(item, "Article", new { name = item })
+        @Html.ActionLink(item, "Details", "Article", new { name = item })
 
         @if (Model.ArticlesWithPunctuation.Last() != item)
         {
@@ -86,7 +86,7 @@
 <p>
     @foreach (var item in Model.ArticlesWithMark)
     {
-        @Html.ActionLink(item.Name, "Article", new { name = item.Name })  <font color="red">@item.Mark</font>
+        @Html.ActionLink(item.Name, "Details", "Article", new { name = item.Name })  <font color="red">@item.Mark</font>
         <!--
         -->@if (Model.ArticlesWithMark.Last() != item)
         {
@@ -99,7 +99,7 @@
 <p>
     @foreach (var item in Model.ArticlesWithHyphen)
     {
-        @Html.ActionLink(item, "Article", new { name = item })
+        @Html.ActionLink(item, "Details", "Article", new { name = item })
 
         @if (Model.ArticlesWithHyphen.Last() != item)
         {
@@ -116,7 +116,9 @@
 <p>
     @foreach (var item in Model.ArticlesWithMoreThanOneTranslationAndOnlyOneMeaning.Take(100))
     {
-        @Html.ActionLink(item.Name, "Article", new { name = item.Name })<text>, </text>        
+        @Html.ActionLink(item.Name, "Details", "Article", new { name = item.Name })
+
+        <text>, </text>
     }
 </p>
 
@@ -124,7 +126,7 @@
 <p>
     @foreach (var item in Model.ArticlesWithMoreThanOneTranslationAndOnlyOneMeaningAndOneExample.Take(100))
     {
-        @Html.ActionLink(item.Name, "Article", new { name = item.Name })
+        @Html.ActionLink(item.Name, "Details", "Article", new { name = item.Name })
 
         <text>, </text>
     }

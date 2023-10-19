@@ -148,7 +148,7 @@
             -->@if (Model.Pattern is not null)
             {
                 <text>, @Localizer["$pattern"]</text>
-                <a href="@Url.Action("Article", "Home", new { name = Model.Pattern.Verb })#@Model.Pattern.Id">@Model.Pattern.Verb</a>
+                <a href="@Url.Action("Details", "Article", new { name = Model.Pattern.Verb })#@Model.Pattern.Id">@Model.Pattern.Verb</a>
                 <text>  (@Model.Pattern.Number)</text>
             }
             @(Model.IsDerived ? "- " + @Localizer["$Derived"] : "")

@@ -1,0 +1,41 @@
+﻿@model ArticleModel
+                    
+@Html.ActionLink(Model)<!--                       
+-->@if (Model.Note is not null)
+{
+    @(" (")
+    @Html.RenderWikiMarkup(Model.Note)
+    @(")")
+}<!--
+-->@foreach(var alt in Model.Resolved.AlternativeForms)
+{
+    @(" / ")
+    @Html.ActionLink(alt)<!--
+-->@if (alt.Note != null)
+    {
+        <text> (@Html.RenderWikiMarkup(@alt.Note))</text><!--                        
+-->}
+}<!--
+--><text>, </text><!--
+-->@if (!Model.IsRedirected)
+{
+    @Html.RenderWikiMarkup(@Model.Resolved.Meanings.First().Translations.First())
+
+    @* subArticles have only one meaning *@
+    @if (Model.Resolved.Meanings.First().Examples.Any())
+    {
+        @await Html.PartialAsync("_ArticleMeaningExamples", Model.Resolved.Meanings.First())
+    }
+}
+else
+{
+    @if (Model.Resolved.Meanings.FirstOrDefault()?.Translations.Any() ?? false)
+    {
+        @Html.RenderWikiMarkup(@Model.Resolved.Meanings.First().Translations.First())
+    }
+    else if (Model.Resolved.FormOf != null
+        && (Model.Resolved.FormOf.Meanings.FirstOrDefault()?.Translations.Any() ?? false))
+    {
+        @Html.RenderWikiMarkup(@Model.Resolved.FormOf.Meanings.First().Translations.First())
+    }         
+}

@@ -1,0 +1,94 @@
+﻿@model ConjugationModel
+@{  
+    bool precedeWithSemicolon = false;
+}
+@if (Model.ImperativeForms.Any())
+{
+    precedeWithSemicolon = true;<!--
+ --><partial name="_Articles" for="ImperativeForms" /><!--
+ -->}
+@{
+    var intensiveForms = Model.IntensiveThirdSingularForms
+                .Concat(Model.IntensiveThirdPluralForms)
+                .Concat(Model.IntensiveThirdSingularFeminineForms);
+}
+@if (intensiveForms.Any())
+{
+    if (precedeWithSemicolon)
+    {
+        <text> ; </text>
+    }
+    precedeWithSemicolon = true;<!--
+ --><partial name="_ArticlesSeparatedBySlash" for="@intensiveForms" /><!--
+ -->}
+@if (Model.PreteriteThirdPluralForms.Any()
+   || Model.PreteriteThirdSingularFeminineForms.Any()
+   || Model.PreteriteThirdSingularForms.Any()
+   || Model.PreteriteFirstSingularForms.Any()
+   || Model.NegativePreteriteThirdSingularForms.Any()
+   || Model.NegativePreteriteThirdPluralForms.Any())
+{
+    if (precedeWithSemicolon)
+    {
+        <text> ; </text>
+    }
+    bool precedeWithComma = false;<!--
+ -->if (Model.PreteriteThirdPluralForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }
+        precedeWithComma = true;<!--
+    --><partial name="_ArticlesSeparatedBySlash" for="PreteriteThirdPluralForms" /><!--
+ -->}
+    if (Model.PreteriteThirdSingularFeminineForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }
+        precedeWithComma = true;<!--
+    --><partial name="_ArticlesSeparatedBySlash" for="PreteriteThirdSingularFeminineForms" /><!--
+ -->}
+    if (Model.PreteriteThirdSingularForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }
+        precedeWithComma = true;<!--
+    --><partial name="_ArticlesSeparatedBySlash" for="PreteriteThirdSingularForms" /><!--
+ -->}
+    if (Model.PreteriteFirstSingularForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }
+        precedeWithComma = true;<!--
+    --><partial name="_ArticlesSeparatedBySlash" for="PreteriteFirstSingularForms" /><!--
+ -->}
+    if (Model.NegativePreteriteThirdSingularForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }        
+        precedeWithComma = true;<!--
+    --><partial name="_Articles_NegativePreterite" for="NegativePreteriteThirdSingularForms" /><!--
+ -->}
+    if (Model.NegativePreteriteThirdPluralForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }
+        precedeWithComma = true;<!--
+    --><partial name="_Articles_NegativePreterite" for="NegativePreteriteThirdPluralForms" /><!--
+ -->}
+}
+@if (Model.Note != null)
+{
+    <text> (@Html.RenderWikiMarkup(Model.Note))</text>
+}

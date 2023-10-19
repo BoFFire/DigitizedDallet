@@ -8,6 +8,48 @@ namespace DigitizedDallet.Helpers;
 
 public static class WikiHelper
 {
+    public static string GetTransliteratedString(this string text, string? script)
+    {
+        return text;
+        /*
+
+#if !DEBUG
+       return text;
+#endif
+
+        script ??= "Latn";
+
+        if (script == "Latn")
+        {
+            return text;
+        }
+
+        switch (script)
+        {
+            case "Latn":
+                script = "";
+                break;
+            case "Tfng":
+                script = "Tifinagh";
+                break;
+            case "Arab":
+                script = "Arabic";
+                break;
+            case "Hebr":
+                script = "Hebrew";
+                break;
+            case "Cyrl":
+                script = "Cyrillic";
+                break;
+            case "Grek":
+                script = "Greek";
+                break;
+        }
+
+        return TransliterationService.Transliterate(text, script);
+        */
+    }
+
     public static IEnumerable<string> ToDalletNotation(this IEnumerable<string> ls) => ls.Select(x => x.ToDalletNotation());
 
     public static string ToDalletNotation(this string text) =>
@@ -46,7 +88,8 @@ public static class WikiHelper
     }    
 
     public static IHtmlContent RenderPureWikiMarkup(this IHtmlHelper htmlHelper, HtmlContentBuilder content, string text)
-    {   
+    {
+        var requestedScript = htmlHelper.ViewBag.RequestedScript as string;
 
         foreach (var innerLink in GetTuples(text, '[', ']')) // Wikilinks
         {
@@ -70,7 +113,7 @@ public static class WikiHelper
                         }
                         
                         content.AppendHtml("<i>");
-                        content.AppendHtml(htmlHelper.ActionLink(linkText, "Index", "Home", protocol: null, hostname: null, fragment: root, routeValues: new { id = letter }, htmlAttributes: null));
+                        content.AppendHtml(htmlHelper.ActionLink(linkText.GetTransliteratedString(requestedScript), "Index", "Article", protocol: null, hostname: null, fragment: root, routeValues: new { id = letter }, htmlAttributes: null));
                         content.AppendHtml("</i>");
                     }
                 }

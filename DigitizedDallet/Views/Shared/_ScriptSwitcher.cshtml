@@ -7,18 +7,19 @@
 @inject IOptions<RequestLocalizationOptions> LocOptions
 ​
 @{
-    var culture = Context.Request.HttpContext.Request.RouteValues["culture"]?.ToString();
+    var culture = Context.Request.HttpContext.Request.RouteValues["culture"]?.ToString() ?? "en";
+    var script = Context.Request.HttpContext.Request.RouteValues["script"]?.ToString();
     var pathBase = Context.Request.PathBase.ToUriComponent() ?? string.Empty;
 
     string? url = null;    
 
-    if (culture != null)
+    if (script != null)
     {        
         url = Context.Request.HttpContext.Features.Get<IHttpRequestFeature>()?.RawTarget;
 
-        if (url?.StartsWith($"{pathBase}/{culture}/") ?? false)
+        if (url?.StartsWith($"{pathBase}/{culture}/{script}/") ?? false)
         {
-            url = url.Remove(0, pathBase.Length + culture.Length + 2);
+            url = url.Remove(0, pathBase.Length + culture.Length + script.Length + 3);
         }
         else
         {
@@ -26,9 +27,8 @@
         }
     }
 
-    var selectedCulture = Context.GetUserCulture();
-    var cultureItems = (LocOptions.Value.SupportedUICultures ?? Enumerable.Empty<System.Globalization.CultureInfo>())
-        .Select(c => new SelectListItem { Value = $"{pathBase}/{c.Name}/{url}", Text = c.NativeName, Selected = c.Name == selectedCulture })
+    var cultureItems = (new string[] { "Latn", "Tfng", "Arab", "Hebr", "Cyrl", "Grek" })
+        .Select(c => new SelectListItem { Value = $"{pathBase}/{culture}/{c}/{url}", Text = c, Selected = c == script })
         .ToList();
 }​
 

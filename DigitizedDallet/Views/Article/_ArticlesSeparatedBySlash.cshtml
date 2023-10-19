@@ -1,0 +1,5 @@
+﻿@model IEnumerable<ArticleModel>
+@{
+    var args = new ViewDataDictionary(ViewData) { { "separator", " / " } };
+}
+<partial name="_Articles" for="@Model" view-data="@args" />

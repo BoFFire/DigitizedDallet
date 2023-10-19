@@ -1,0 +1,217 @@
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@model ArticleModel
+
+<h2>
+    @Model.Name.GetTransliteratedString(ViewBag.RequestedScript as string)
+    @if (Model.Mark != null)
+    {
+        <font color="red">@Model.Mark</font>
+    }
+    @Model.GetHtmlDalletNotation()
+    <environment include="Development">        
+        [@Html.ActionLink("Edit", "Edit", new { id = Model.Id })]
+        [@Html.ActionLink("RedirectToHomonym", "RedirectToHomonym", new { id = Model.Id })]
+    </environment>
+</h2>
+
+<h4>@Model.Id</h4>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.PartOfSpeech)</h4>
+    <hr />
+
+    <dl>
+        <dt>@Localizer["$Root"]</dt>
+        <dd>
+            @Html.ActionLink(Model.Root.Name, "Index", "Article", protocol: null, hostname: null, fragment: Model.Root.Name, routeValues: new { id = Model.Root.Letter.Name }, htmlAttributes: null)
+        </dd>
+
+        @if (Model.Info != null)
+        {
+            <dt>@Localizer["$Info"]</dt>
+            <dd>@Html.RenderWikiMarkup(Model.Info)</dd>
+        }
+        @if (Model.Annexation != null)
+        {
+            <dt>@Localizer["$Annexation"]</dt>
+            <dd>@Html.DisplayFor(model => model.Annexation)</dd>
+        }
+        @if (Model.Note != null)
+        {
+            <dt>@Localizer["$Note"]</dt>
+            <dd>@Html.RenderWikiMarkup(Model.Note)</dd>
+        }
+        @if (Model.Prefix != null)
+        {
+            <dt>@Localizer["$Prefix"]</dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Prefix)
+
+                -
+
+                @if (Model.PrefixedArticle != null)
+                {
+                    @Html.ActionLink(@Model.PrefixedArticle, withDallet: false)
+                }
+            </dd>
+
+        }
+        @if (Model.Gender != null)
+        {
+            <dt>@Localizer["$Gender"]</dt>
+            <dd>@Html.RenderWikiMarkup(Model.Gender)</dd>
+        }
+        @if (Model.Compound != null)
+        {
+            <dt>@Localizer["$Compound"]</dt>
+            <dd>@Html.RenderWikiMarkup(Model.Compound)</dd>
+        }              
+        @if (Model.EtymologicalReferences.Any())
+        {
+            <dt>@Localizer["$EtymologicalReferences"]</dt>
+            foreach (var etymologicalReference in Model.EtymologicalReferences)
+            {
+                <dd>@Html.RenderWikiMarkup(etymologicalReference)</dd>
+            }
+        }
+        @if (Model.See != null)
+        {
+            <dt>@Localizer["$See"]</dt>
+            <dd>@Html.RenderWikiMarkup(Model.See)</dd>
+        }
+
+        @foreach (var conjugation in Model.Conjugations)
+        {
+            <dt>
+                Conjugation<text>_</text>@(Model.Conjugations.IndexOf(conjugation) + 1)
+                @if (conjugation.IntensiveImperativeForms.Any())
+                {
+                    <partial name="_ArticlesSeparatedBySlash" for="@conjugation.IntensiveImperativeForms" />
+                }
+
+                @if (conjugation.AmyagPage is not null)
+                {
+                    <a href="#@conjugation.AmyagPage.Id">full</a>
+                    <a href="https://www.amyag.com/f/@conjugation.AmyagPage.Id">amyag.com</a>
+
+                    @* @Html.ActionLink(conjugation.AmyagPage.Id, "Details", "Conjugation", new { id = conjugation.AmyagPage.Id }) *@
+                }
+            </dt>
+
+            <dd>
+                <partial name="_Article_Conjugation" for="@conjugation" />
+            </dd>
+        }
+
+        @if (Model.VerbalNouns.Any())
+        {
+            <dt>@Localizer["$VerbalNouns"]</dt>                        
+            <dd><partial name="_Articles" for="VerbalNouns" /></dd>
+        }
+
+        @if (Model.PluralForms.Any())
+        {
+            <dt>@Localizer["$PluralForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="PluralForms" /></dd>
+        }
+
+        @if (Model.FeminineForms.Any())
+        {
+            <dt>@Localizer["$FeminineForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="FeminineForms" /></dd>
+        }
+
+        @if (Model.SingularForms.Any())
+        {
+            <dt>@Localizer["$SingularForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="SingularForms" /></dd>
+        }
+
+        @if (Model.FemininePluralForms.Any())
+        {
+            <dt>@Localizer["$FemininePluralForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="FemininePluralForms" /></dd>
+        }
+
+        @if (Model.AlternativeForms.Any())
+        {
+            <dt>@Localizer["$AlternativeForms"]</dt>            
+            <dd>
+                @foreach (var form in Model.AlternativeForms)
+                {   
+                    <partial name="_Article_AlternativeForm" for="@form" />
+                    <br />
+                }
+            </dd>
+        }
+    </dl>
+
+
+    <h4>@Localizer["$Meanings"]</h4>
+
+    @foreach (var kvp in Model.FormOfProperties)
+    {
+        <p>
+            <i>@Localizer[$"${kvp.Key}"]</i> @Html.ActionLink(kvp.Value, useGuid: true, withDalletEdit: false)<text>: </text> @Html.RenderWikiMarkup(kvp.Value.FirstTranslation)
+        </p>
+    }
+
+    @foreach (var meaning in Model.Meanings)
+    {   
+        <partial name="_ArticleMeaning" for="@meaning" />
+    }
+
+
+    @if (Model.SubArticles.Any())
+    {
+        <p>
+            <h4>@Localizer["$SubArticles"]</h4>
+            <ul>
+                @foreach (var subArticle in Model.SubArticles)
+                {
+                    string bgColor = (subArticle.IsRedirected ? "azure" : "transparent");
+
+                    <li style="background-color: @bgColor;">                        
+                        <partial name="_Article_SubArticle" for="@subArticle" />
+                    </li>
+                }
+            </ul>
+        </p>
+    }
+
+
+    @foreach (var conjugation in Model.Conjugations.Where(x => x.AmyagPage is not null))
+    {
+        <div>
+            <a id="@conjugation.AmyagPage!.Id" class="anchor">@conjugation.AmyagPage!.Id</a>
+            <partial name="~/views/conjugation/_details.cshtml" for="@conjugation.AmyagPage" />
+        </div>
+    }
+
+
+    <p>
+        @if (Model.SubArticleOf != null)
+        {
+            <text>@Localizer["$ReturnToMainArticle:"] </text> @Html.ActionLink(Model.SubArticleOf, useGuid: true)
+        }
+        else
+        {
+            @if (Model.PreviousEntry != null)
+            {
+                <b>@Localizer["$Previous:"] </b>
+                @Html.ActionLink(Model.PreviousEntry, useGuid: true, withDalletEdit: false)
+            }
+
+            <b> - </b>
+
+            @if (Model.NextEntry != null)
+            {
+                <b>@Localizer["$Next:"] </b>
+                @Html.ActionLink(Model.NextEntry, useGuid: true, withDalletEdit: false)
+            }
+        }
+
+    </p>
+
+</div>

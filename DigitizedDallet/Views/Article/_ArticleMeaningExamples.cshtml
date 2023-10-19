@@ -1,0 +1,51 @@
+﻿@model MeaningModel
+
+@*<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#@Model.StringIndex">@Model.Examples.Count Examples</button>
+<table class="rTable row collapse" id="@Model.StringIndex">*@
+
+<table class="rTable">
+    <tbody>
+        @foreach (var example in Model.Examples)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(example.Text))
+                    {
+                        <font color="#385f8b">@example.Text</font>
+                        <br />
+                    }
+
+                    <small style="color:grey">[@example.DalletText.ToDalletNotation()]</small>                    
+                </td>
+
+                <td>
+                    @Html.RenderWikiMarkup(example.Translation)
+
+                    @if (@example.Literal is not null)
+                    {
+                        <br />
+                        <small style="color:grey">@example.Literal</small>
+                    }
+                </td>
+
+                @if (example.Note is not null)
+                {
+                    <td>
+                        @Html.RenderWikiMarkup(@example.Note)
+                    </td>
+                }
+            </tr>
+
+
+            @if (example.Source is not null)
+            {
+                var colspan = example.Note is null ? 2 : 3;
+                <tr>
+                    <td colspan="@colspan" style='text-align:center; vertical-align:middle'>
+                        <small>@Html.RenderWikiMarkup(@example.Source)</small>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

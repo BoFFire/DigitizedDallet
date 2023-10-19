@@ -9,11 +9,9 @@ public static class MyHtmlHelperLinkExtensions
 {
     public static IHtmlContent ActionLink(this IHtmlHelper helper, RootModel root)
     {
-        var language = helper.ViewBag.RequestedLanguage;
-
         return helper.ActionLink(root.Name,
-            nameof(HomeController.Index),
-            nameof(HomeController).Remove(nameof(HomeController).Length - "Controller".Length),
+            nameof(ArticleController.Index),
+            nameof(ArticleController).Remove(nameof(ArticleController).Length - "Controller".Length),
             protocol: null,
             hostname: null,
             fragment: root.Name,
@@ -31,12 +29,12 @@ public static class MyHtmlHelperLinkExtensions
         bool withDalletEdit = true,
         bool useGuid = false)
     {
-        var language = helper.ViewBag.RequestedLanguage;
+        var requestedScript = helper.ViewBag.RequestedScript as string; 
 
-        var content = new HtmlContentBuilder().AppendHtml(helper.ActionLink(prefix + article.Resolved.Name,
-                nameof(HomeController.Article),
-                nameof(HomeController).Remove(nameof(HomeController).Length - "Controller".Length),
-                new { name = article.Resolved.Name, culture = language, guid = useGuid ? article.Id : null }));
+        var content = new HtmlContentBuilder().AppendHtml(helper.ActionLink(prefix?.GetTransliteratedString(requestedScript) + article.Resolved.Name.GetTransliteratedString(requestedScript),
+                nameof(ArticleController.Details),
+                nameof(ArticleController).Remove(nameof(ArticleController).Length - "Controller".Length),
+                new { name = article.Resolved.Name, guid = useGuid ? article.Id : null }));
 
         if (withMark && article.Resolved.Mark != null)
         {
@@ -56,9 +54,7 @@ public static class MyHtmlHelperLinkExtensions
     
     public static IHtmlContent GetHtmlDalletNotation(this ArticleModel article, string? prefix = null, bool withDalletEdit = true)
     {
-#if DEBUG
-        //withDalletEdit = withDalletEdit && false;
-#else
+#if !DEBUG
         withDalletEdit = withDalletEdit && false;
 #endif
 
