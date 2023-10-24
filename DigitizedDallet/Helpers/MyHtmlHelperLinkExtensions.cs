@@ -55,9 +55,8 @@ public static class MyHtmlHelperLinkExtensions
     public static IHtmlContent GetHtmlDalletNotation(this ArticleModel article, string? prefix = null, bool withDalletEdit = true)
     {
 #if !DEBUG
-        withDalletEdit = withDalletEdit && false;
+        withDalletEdit = false;
 #endif
-
         var content = new HtmlContentBuilder();
 
         if (withDalletEdit)
