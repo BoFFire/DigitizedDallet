@@ -64,8 +64,8 @@ public class DicoRepository
         InvalidTemplates = GetFrenchText().SelectMany(GetInvalidTemplates).Distinct().ToList(),
         MainArticlesCount = Doc.MainArticles.Count,
         ArticlesCount = Doc.Articles.Where(x => !x.IsRedirected).Count(),
-        ArticlesWithDalletNamesCount = Doc.Articles.Where(x => x.DalletNames.Any()).Count(),
-        ArticlesWithoutDalletNamesCount = Doc.Articles.Where(x => !x.DalletNames.Any()).Count(),
+        ArticlesWithDalletNamesCount = Doc.Articles.Where(x => !x.IsRedirected && x.DalletNames.Any()).Count(),
+        ArticlesWithoutDalletNamesCount = Doc.Articles.Where(x => !x.IsRedirected && !x.DalletNames.Any()).Count(),
         DistinctArticlesCount = Doc.Articles.Select(x => x.Name).Distinct().Count(),
         ArticlesWithSubArticles = Doc.Articles.Where(x => x.SubArticles.Any()).Select(x => x.Name).ToList(),
         ArticlesWithRedirectedSubArticles = Doc.Articles.Where(x => x.SubArticles.Any(y => y.IsRedirected)).Select(x => x.Name).ToList(),
@@ -112,7 +112,7 @@ public class DicoRepository
                 if (example.Source != null)
                 {
                     yield return example.Source;
-                }                
+                }
             }
 
             foreach (var meaning in article.AllMeanings)
@@ -125,10 +125,10 @@ public class DicoRepository
                 if (meaning.Note != null)
                 {
                     yield return meaning.Note;
-                }                
+                }
             }
         }
-    }    
+    }
 
     static List<string> GetInvalidTemplates(string text)
         => WikiHelper.GetTuples(text, '{', '}')
