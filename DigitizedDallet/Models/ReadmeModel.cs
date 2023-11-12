@@ -13,7 +13,6 @@ public class ReadmeModel
 
     public string[] ToDoTasks { get; set; } = new string[]
     {
-        "occlusives are missing in example.dalletText",
         "restore all article.dalletNames",
         "create articles for annexed state"
     };
