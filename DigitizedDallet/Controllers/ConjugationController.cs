@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DigitizedDallet.Controllers;
 
 public class ConjugationController : Controller
-{   
+{
     public ActionResult Details(string id)
     {
         if (id == null)
@@ -13,7 +13,7 @@ public class ConjugationController : Controller
             return new BadRequestResult();
         }
 
-        var page = DicoRepository.AmyagPages.Single(x => x.Id == id);
+        var page = DicoRepository.AmyagPages[id];
 
         return View(page);
     }

@@ -19,7 +19,7 @@ public class DicoRepository
                 {
                     foreach (var conjugations in w.Conjugations.Where(x => x.AmyagId is not null))
                     {
-                        conjugations.AmyagPage = AmyagPages.Single(x => x.Id == conjugations.AmyagId);
+                        conjugations.AmyagPage = AmyagPages[conjugations.AmyagId!];
                     }
                 }
             }
@@ -28,8 +28,8 @@ public class DicoRepository
         }
     }
 
-    static List<AmyagPage>? _AmyagPages;
-    static public List<AmyagPage> AmyagPages => _AmyagPages ??= CustomJsonSerializer.DeserializeObject<List<AmyagPage>>(File.ReadAllText(ConjugationFilePath));
+    static Dictionary<string, AmyagPage>? _AmyagPages;
+    static public Dictionary<string, AmyagPage> AmyagPages => _AmyagPages ??= CustomJsonSerializer.DeserializeObject<List<AmyagPage>>(File.ReadAllText(ConjugationFilePath)).ToDictionary(x => x.Id, x => x);
 
     private static string DictionaryFilePath => Path.Combine(EnvPath ?? throw new Exception("You need to call init"), "dictionary.json");
     private static string ConjugationFilePath => Path.Combine(EnvPath ?? throw new Exception("You need to call init"), "conjugation.json");
