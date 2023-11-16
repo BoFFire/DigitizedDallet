@@ -68,6 +68,8 @@ public static class WikiHelper
             return new HtmlContentBuilder();
         }
 
+        text = text.Replace("« ", "«\u00A0").Replace(" »", "\u00A0»").Replace(" ;", "\u00A0;").Replace(" !", "\u00A0!").Replace(" ?", "\u00A0?").Replace(" :", "\u00A0:");
+
         text = text.ToDalletNotation();
 
         var content = new HtmlContentBuilder();

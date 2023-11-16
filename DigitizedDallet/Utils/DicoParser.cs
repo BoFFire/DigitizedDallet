@@ -52,6 +52,11 @@ public class DicoParser
                 form.AlternativeFormOf = entry;
             }
 
+            foreach (var form in entry.ReducedForms)
+            {
+                form.ReducedFormOf = entry;
+            }
+
             foreach (var form in entry.SubArticles)
             {
                 form.SubArticleOf = entry;

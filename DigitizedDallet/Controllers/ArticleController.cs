@@ -143,6 +143,7 @@ public class ArticleController : Controller
             stored_article.Conjugations.Clear();
             stored_article.Meanings.Clear();
             stored_article.AlternativeForms.Clear();
+            stored_article.ReducedForms.Clear();
             stored_article.SubArticles.Clear();
             stored_article.PluralForms.Clear();
             stored_article.FemininePluralForms.Clear();
@@ -201,6 +202,7 @@ public class ArticleController : Controller
         stored_article.Conjugations.Clear();
         stored_article.Meanings.Clear();
         stored_article.AlternativeForms.Clear();
+        stored_article.ReducedForms.Clear();
         stored_article.SubArticles.Clear();
         stored_article.PluralForms.Clear();
         stored_article.FemininePluralForms.Clear();

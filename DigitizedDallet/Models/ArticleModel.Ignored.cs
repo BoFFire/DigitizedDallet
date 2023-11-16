@@ -6,6 +6,7 @@ public partial class ArticleModel
 {
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public IEnumerable<ArticleModel> AllForms => AlternativeForms
+        .Concat(ReducedForms)
         .Concat(SubArticles)
         .Concat(PluralForms)
         .Concat(FemininePluralForms)
@@ -81,6 +82,9 @@ public partial class ArticleModel
 
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public ArticleModel? AlternativeFormOf { get; set; }
+
+    [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
+    public ArticleModel? ReducedFormOf { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public ArticleModel? SubArticleOf { get; set; }

@@ -145,6 +145,12 @@
                 }
             </dd>
         }
+
+        @if (Model.ReducedForms.Any())
+        {
+            <dt>@Localizer["$ReducedForms"]</dt>
+            <dd><partial name="_ArticlesSeparatedBySlash" for="ReducedForms" /></dd>
+        }
     </dl>
 
 

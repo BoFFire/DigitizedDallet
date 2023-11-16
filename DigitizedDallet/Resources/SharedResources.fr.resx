@@ -234,6 +234,12 @@
   <data name="$Previous:" xml:space="preserve">
     <value>Précédent :</value>
   </data>
+  <data name="$ReducedFormOf" xml:space="preserve">
+    <value>Forme réduite de</value>
+  </data>
+  <data name="$ReducedForms" xml:space="preserve">
+    <value>Formes réduites</value>
+  </data>
   <data name="$RegularVerb" xml:space="preserve">
     <value>Verbe régulier</value>
   </data>

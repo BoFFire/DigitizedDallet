@@ -14,6 +14,7 @@ public partial class ArticleModel
     public List<string> DalletNames { get; set; } = new List<string>();
     
     public List<ArticleModel> AlternativeForms { get; set; } = new List<ArticleModel>();
+    public List<ArticleModel> ReducedForms { get; set; } = new List<ArticleModel>();
 
     public string? Info { get; set; }
     public string? Note { get; set; }
