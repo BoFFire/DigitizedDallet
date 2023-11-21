@@ -21,6 +21,11 @@
 {
     @Html.RenderWikiMarkup(@Model.Resolved.Meanings.First().Translations.First())
 
+    @if (Model.Resolved.Meanings.First().Note != null)
+    {
+        <small>(@Html.RenderWikiMarkup(Model.Resolved.Meanings.First().Note))</small>
+    }
+
     @* subArticles have only one meaning *@
     @if (Model.Resolved.Meanings.First().Examples.Any())
     {

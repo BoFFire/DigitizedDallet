@@ -153,6 +153,9 @@
   <data name="$Imperative" xml:space="preserve">
     <value>Impératif</value>
   </data>
+  <data name="$In" xml:space="preserve">
+    <value>Dans</value>
+  </data>
   <data name="$Intensive" xml:space="preserve">
     <value>Intensif</value>
   </data>

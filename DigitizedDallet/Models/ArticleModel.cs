@@ -12,7 +12,6 @@ public partial class ArticleModel
 
     // [System.Text.Json.Serialization.JsonPropertyName("dalletNames")]
     public List<string> DalletNames { get; set; } = new List<string>();
-    
     public List<ArticleModel> AlternativeForms { get; set; } = new List<ArticleModel>();
     public List<ArticleModel> ReducedForms { get; set; } = new List<ArticleModel>();
 
@@ -34,5 +33,6 @@ public partial class ArticleModel
     public string? Compound { get; set; }
     public string? Gender { get; set; }
     public List<MeaningModel> Meanings { get; set; } = new List<MeaningModel>();    
-    public List<ArticleModel> SubArticles { get; set; } = new List<ArticleModel>();    
+    public List<ArticleModel> SubArticles { get; set; } = new List<ArticleModel>();
+    public List<ArticleModel> InArticles { get; set; } = new List<ArticleModel>();
 }

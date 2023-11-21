@@ -88,7 +88,7 @@
         <div>@Html.RenderWikiMarkup(Model.Resolved.Note)</div>
     }
 
-   @* @Html.DisplayFor2(Model.Resolved.FirstTranslation)*@
+    @* @Html.RenderWikiMarkup(Model.Resolved.FirstTranslation)*@
 
     @foreach (var kvp in Model.Resolved.FormOfProperties)
     {
@@ -102,8 +102,20 @@
 
             <text>: </text> @Html.RenderWikiMarkup(kvp.Value.FirstTranslation)
         }
-
     }
+
+
+    @if (Model.Resolved.InArticles.Any())
+    {
+        <i>@Localizer["$In"]</i>
+
+        @foreach (var inArticle in Model.Resolved.InArticles)
+        {
+            @Html.ActionLink(inArticle.Resolved, useGuid: true, withDalletEdit: false)
+            <text>: </text> @Html.RenderWikiMarkup(inArticle.Resolved.FirstTranslation)
+            <br/>
+        }
+    }    
 
     @if (Model.Resolved.See != null)
     {

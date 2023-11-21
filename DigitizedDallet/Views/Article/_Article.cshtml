@@ -186,6 +186,23 @@
         </p>
     }
 
+    @if (Model.InArticles.Any())
+    {
+        <p>
+            <h4>@Localizer["$In"]</h4>
+            <ul>
+                @foreach (var inArticle in Model.InArticles)
+                {
+                    string bgColor = (inArticle.IsRedirected ? "azure" : "transparent");
+
+                    <li style="background-color: @bgColor;">
+                        <partial name="_Article_SubArticle" for="@inArticle" />
+                    </li>
+                }
+            </ul>
+        </p>
+    }
+
 
     @foreach (var conjugation in Model.Conjugations.Where(x => x.AmyagPage is not null))
     {

@@ -6,6 +6,7 @@ public partial class ArticleModel
 {
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public IEnumerable<ArticleModel> AllForms => AlternativeForms
+        .Concat(InArticles)
         .Concat(ReducedForms)
         .Concat(SubArticles)
         .Concat(PluralForms)
