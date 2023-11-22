@@ -15,32 +15,38 @@
     {
         <text> (@Html.RenderWikiMarkup(@alt.Note))</text><!--                        
 -->}
-}<!--
---><text>, </text><!--
+}<!--                       
 -->@if (!Model.IsRedirected)
 {
-    @Html.RenderWikiMarkup(@Model.Resolved.Meanings.First().Translations.First())
-
-    @if (Model.Resolved.Meanings.First().Note != null)
+    foreach (var meaning in Model.Resolved.Meanings)
     {
-        <small>(@Html.RenderWikiMarkup(Model.Resolved.Meanings.First().Note))</small>
-    }
+        foreach (var trans in meaning.Translations)
+        {
+            <text> ‖ </text>
+            @Html.RenderWikiMarkup(trans)
+        }
 
-    @* subArticles have only one meaning *@
-    @if (Model.Resolved.Meanings.First().Examples.Any())
-    {
-        @await Html.PartialAsync("_ArticleMeaningExamples", Model.Resolved.Meanings.First())
-    }
+        @if (meaning.Note != null)
+        {
+            <small>(@Html.RenderWikiMarkup(meaning.Note))</small>
+        }
+
+        @if (meaning.Examples.Any())
+        {
+            @await Html.PartialAsync("_ArticleMeaningExamples", Model.Resolved.Meanings.First())
+        }
+    }   
 }
 else
 {
-    @if (Model.Resolved.Meanings.FirstOrDefault()?.Translations.Any() ?? false)
+    var target = Model.Resolved.FormOf ?? Model.Resolved; // ulabudd
+    
+    foreach (var meaning in target.Meanings)
     {
-        @Html.RenderWikiMarkup(@Model.Resolved.Meanings.First().Translations.First())
-    }
-    else if (Model.Resolved.FormOf != null
-        && (Model.Resolved.FormOf.Meanings.FirstOrDefault()?.Translations.Any() ?? false))
-    {
-        @Html.RenderWikiMarkup(@Model.Resolved.FormOf.Meanings.First().Translations.First())
-    }         
+        foreach (var trans in meaning.Translations)
+        {
+            <text> ‖ </text>
+            @Html.RenderWikiMarkup(trans)
+        }
+    }    
 }

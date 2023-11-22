@@ -67,19 +67,13 @@ public class DicoParser
                 }
 
                 if (string.IsNullOrWhiteSpace(form.RedirectToId) // not a redirect
-                    && form.Meanings.Count != 1)
+                    && form.Meanings.Count < 1)
                 {
-                    throw new Exception("SubArticles must have one meaning, no more, no less.");
+                    throw new Exception("SubArticles must have at least one meaning");
                 }
 
                 if (string.IsNullOrWhiteSpace(form.RedirectToId) // not a redirect
-                    && form.Meanings.First().Translations.Count != 1)
-                {
-                    throw new Exception("SubArticles must have one translation, no more, no less.");
-                }
-
-                if (string.IsNullOrWhiteSpace(form.RedirectToId) // not a redirect
-                    && form.Meanings.First().Meanings.Count != 0)
+                    && form.Meanings.Any(x => x.Meanings.Count != 0))
                 {
                     throw new Exception("SubArticles must not have sub meanings.");
                 }
