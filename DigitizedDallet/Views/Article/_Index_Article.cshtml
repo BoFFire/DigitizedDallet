@@ -20,6 +20,11 @@
     {
         <text>◆ </text> @Html.ActionLink(Model, withDalletEdit: false)
 
+        @if (Model.StandardizedForm != null)
+        {
+            <text> (&lt @Html.ActionLink(Model.StandardizedForm))</text>
+        }
+
         @if (Model.Resolved.AlternativeForms.Any())
         {
             <ul>

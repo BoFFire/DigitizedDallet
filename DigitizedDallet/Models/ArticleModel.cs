@@ -12,6 +12,8 @@ public partial class ArticleModel
 
     // [System.Text.Json.Serialization.JsonPropertyName("dalletNames")]
     public List<string> DalletNames { get; set; } = new List<string>();
+
+    public ArticleModel? StandardizedForm { get; set; }
     public List<ArticleModel> AlternativeForms { get; set; } = new List<ArticleModel>();
     public List<ArticleModel> ReducedForms { get; set; } = new List<ArticleModel>();
 

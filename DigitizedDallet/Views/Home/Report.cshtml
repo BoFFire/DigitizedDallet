@@ -10,8 +10,13 @@
 <h3>@Model.MainArticlesCount MainArticles</h3>
 
 <h3>
-    @Model.ArticlesCount Articles (declensions included) [@Model.ArticlesWithDalletNamesCount w/ dallet (@string.Format("{0:P2}", (double)Model.ArticlesWithDalletNamesCount / (double)Model.ArticlesCount)) @Model.ArticlesWithoutDalletNamesCount w/o dallet]
+    @Model.ArticlesCount Articles (declensions included)
 </h3>
+<h4>
+    [@Model.ArticlesWithDalletNamesCount w/ dallet,
+    @Model.ArticlesWithoutDalletNamesCount w/o dallet (@string.Format("{0:P2}", (double)Model.ArticlesWithoutDalletNamesCount / (double)Model.ArticlesCount)),
+    @Model.StandardizedFormsCount std]
+</h4>
 
 <h3>@Model.DistinctArticlesCount DistinctArticles</h3>
 

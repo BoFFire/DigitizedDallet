@@ -4,7 +4,11 @@
     @Html.ActionLink(form, prefix: "ur ")
     @if (form.Note != null)
     {
-        <text> (@Html.RenderWikiMarkup(@form.Note))</text>
+        <text> (@Html.RenderWikiMarkup(form.Note))</text>
+    }
+    @if (form.StandardizedForm != null)
+    {
+        <text> (&lt @Html.ActionLink(form.StandardizedForm, prefix: "ur "))</text>
     }
     @if (Model.Last() != form)
     {

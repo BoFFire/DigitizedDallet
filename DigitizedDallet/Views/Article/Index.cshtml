@@ -24,6 +24,7 @@
     @foreach (var root in Model.Roots)
     {
         foreach (var item in root.Articles
+        @* .Where(x => !x.IsRedirected && x.Name != "etc" && (!x.DalletNames.Any() || x.AllForms.Any(y => !y.IsRedirected && y.Name != "etc" && y.StandardizedFormOf is null && !y.DalletNames.Any()))) *@
         @*.Where(x => x.Meanings.SelectMany(x => x.Translations).Any(y => y.Contains("[[")))*@
         @*.Where(x => x.Meanings.SelectMany(x => x.Examples).Any(y => !string.IsNullOrWhiteSpace(y.Note)))*@
         @*.Where(x => x.Meanings.Any(x => x.Translations.Count > 1))*@

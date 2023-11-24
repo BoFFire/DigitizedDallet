@@ -23,11 +23,6 @@ public class DicoParser
                     foreach (var form in entry.AllForms)
                     {
                         form.Root = entry.Root;
-
-                        foreach (var subform in form.AllForms)
-                        {
-                            subform.Root = entry.Root;
-                        }
                     }
                 }
             }
@@ -46,6 +41,11 @@ public class DicoParser
 
             entry.Meanings.ForEach(x => x.AssignParent());
             entry.Meanings.ForEach(x => x.Article = entry);
+
+            if (entry.StandardizedForm is not null)
+            {
+                entry.StandardizedForm.StandardizedFormOf = entry;
+            }
 
             foreach (var form in entry.AlternativeForms)
             {

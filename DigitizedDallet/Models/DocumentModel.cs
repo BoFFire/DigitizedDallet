@@ -8,12 +8,11 @@ public class DocumentModel
     public List<LetterModel> Letters { get; set; } = new List<LetterModel>();
 
     private List<ArticleModel>? _Articles;
-    [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     public List<ArticleModel> Articles => _Articles ??= Letters.SelectMany(x => x.Roots)
         .SelectMany(x => x.Articles)
-        .Select(x => new List<ArticleModel> { x }.Concat(x.AllForms)
-            .Concat(x.AlternativeForms.SelectMany(y => y.AllForms))
-            .Concat(x.SubArticles.SelectMany(y => y.AllForms)))
+        .Select(x => new List<ArticleModel> { x }.Concat(x.AllForms))
         .SelectMany(x => x)
         .ToList();
 

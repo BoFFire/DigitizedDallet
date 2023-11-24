@@ -2,13 +2,18 @@
 @model ArticleModel
 
 <h2>
-    @Model.Name.GetTransliteratedString(ViewBag.RequestedScript as string)
+    @Model.Name.GetTransliteratedString(ViewBag.RequestedScript as string)    
     @if (Model.Mark != null)
     {
         <font color="red">@Model.Mark</font>
     }
     @Model.GetHtmlDalletNotation()
+    @if (Model.StandardizedForm != null)
+    {
+        <text> (&lt @Html.ActionLink(Model.StandardizedForm))</text>
+    }
     <environment include="Development">        
+        <br />
         [@Html.ActionLink("Edit", "Edit", new { id = Model.Id })]
         [@Html.ActionLink("RedirectToHomonym", "RedirectToHomonym", new { id = Model.Id })]
     </environment>
@@ -25,7 +30,7 @@
         <dd>
             @Html.ActionLink(Model.Root.Name, "Index", "Article", protocol: null, hostname: null, fragment: Model.Root.Name, routeValues: new { id = Model.Root.Letter.Name }, htmlAttributes: null)
         </dd>
-
+        
         @if (Model.Info != null)
         {
             <dt>@Localizer["$Info"]</dt>

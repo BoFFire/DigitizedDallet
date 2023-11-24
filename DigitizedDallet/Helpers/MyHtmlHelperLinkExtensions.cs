@@ -34,7 +34,7 @@ public static class MyHtmlHelperLinkExtensions
         var content = new HtmlContentBuilder().AppendHtml(helper.ActionLink(prefix?.GetTransliteratedString(requestedScript) + article.Resolved.Name.GetTransliteratedString(requestedScript),
                 nameof(ArticleController.Details),
                 nameof(ArticleController).Remove(nameof(ArticleController).Length - "Controller".Length),
-                new { name = article.Resolved.Name, guid = useGuid ? article.Id : null }));
+                new { name = article.Resolved.Name, guid = useGuid ? article.Resolved.Id : null }));
 
         if (withMark && article.Resolved.Mark != null)
         {
@@ -51,13 +51,18 @@ public static class MyHtmlHelperLinkExtensions
         return content;
     }
 
-    
+
     public static IHtmlContent GetHtmlDalletNotation(this ArticleModel article, string? prefix = null, bool withDalletEdit = true)
     {
 #if !DEBUG
         withDalletEdit = false;
 #endif
         var content = new HtmlContentBuilder();
+
+        if (article.StandardizedFormOf is not null)
+        {
+            return content;
+        }
 
         if (withDalletEdit)
         {

@@ -13,6 +13,7 @@ public class ReportViewModel
 
     public int ArticlesWithDalletNamesCount { get; set; }
     public int ArticlesWithoutDalletNamesCount { get; set; }
+    public int StandardizedFormsCount { get; set; }
 
     public int DistinctArticlesCount { get; set; }
 

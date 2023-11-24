@@ -8,7 +8,12 @@
 
     @if (form.Note != null)
     {
-        <text> (@Html.RenderWikiMarkup(@form.Note))</text>
+        <text> (@Html.RenderWikiMarkup(form.Note))</text>
+    }
+
+    @if (form.StandardizedForm != null)
+    {
+        <text> (&lt @Html.ActionLink(form.StandardizedForm))</text>
     }
 
     @if (Model.Last() != form)

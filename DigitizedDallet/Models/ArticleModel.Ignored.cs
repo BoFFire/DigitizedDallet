@@ -4,8 +4,14 @@ namespace DigitizedDallet.Models;
 
 public partial class ArticleModel
 {
+    private List<ArticleModel>? _AllForms;
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
-    public IEnumerable<ArticleModel> AllForms => AlternativeForms
+    public List<ArticleModel> AllForms => _AllForms ??= AllDirectForms.Concat(AllDirectForms.SelectMany(x => x.AllDirectForms)).ToList();
+
+
+    private List<ArticleModel>? _AllDirectForms;
+    [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
+    public List<ArticleModel> AllDirectForms => _AllDirectForms ??= AlternativeForms
         .Concat(InArticles)
         .Concat(ReducedForms)
         .Concat(SubArticles)
@@ -14,7 +20,10 @@ public partial class ArticleModel
         .Concat(FeminineForms)
         .Concat(SingularForms)
         .Concat(VerbalNouns)
-        .Concat(Conjugations.SelectMany(x=> x.AllForms));
+        .Concat(Conjugations.SelectMany(x => x.AllForms))
+        .Concat(StandardizedForm == null ? Enumerable.Empty<ArticleModel>() : new[] { StandardizedForm })
+        .ToList();
+    
 
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public string? PartOfSpeech
@@ -80,6 +89,9 @@ public partial class ArticleModel
 
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public bool IsRedirected => RedirectTo != null;
+
+    [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
+    public ArticleModel? StandardizedFormOf { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
     public ArticleModel? AlternativeFormOf { get; set; }

@@ -255,6 +255,9 @@
   <data name="$Save" xml:space="preserve">
     <value>Sauvegarder</value>
   </data>
+  <data name="$StandardizedFormOf" xml:space="preserve">
+    <value>Forme standardisée de</value>
+  </data>
   <data name="$Stem" xml:space="preserve">
     <value>Thème</value>
   </data>
@@ -266,5 +269,8 @@
   </data>
   <data name="$VerbalNouns" xml:space="preserve">
     <value>Noms verbaux</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

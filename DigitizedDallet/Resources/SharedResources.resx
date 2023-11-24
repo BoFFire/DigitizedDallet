@@ -255,6 +255,9 @@
   <data name="$Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="$StandardizedFormOf" xml:space="preserve">
+    <value>Standardized form of</value>
+  </data>
   <data name="$Stem" xml:space="preserve">
     <value>Stem</value>
   </data>
