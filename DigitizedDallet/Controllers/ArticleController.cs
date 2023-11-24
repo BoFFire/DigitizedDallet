@@ -11,6 +11,8 @@ public class ArticleController : Controller
 
     public ActionResult Index(string? id)
     {
+        id = id?.ToUpper();
+
         if (string.IsNullOrWhiteSpace(id))
         {
             id = TempData["letter"]?.ToString();

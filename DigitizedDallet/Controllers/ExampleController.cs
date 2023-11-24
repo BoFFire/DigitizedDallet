@@ -10,6 +10,8 @@ public class ExampleController : Controller
 {
     public ActionResult Index(string? id)
     {
+        id = id?.ToUpper();
+
         if (string.IsNullOrWhiteSpace(id))
         {
             id = "A";
@@ -33,6 +35,8 @@ public class ExampleController : Controller
 
     public ActionResult Toggle(string? id)
     {
+        id = id?.ToUpper();
+
         if (string.IsNullOrWhiteSpace(id))
         {
             id = "A";
@@ -132,6 +136,8 @@ public class ExampleController : Controller
 
     public ActionResult Export(string? id)
     {
+        id = id?.ToUpper();
+
         if (string.IsNullOrWhiteSpace(id))
         {
             id = "A";

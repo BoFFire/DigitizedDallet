@@ -27,7 +27,7 @@
         }
     }
 
-    var cultureItems = (new string[] { "Latn", "Tfng", "Arab", "Hebr", "Cyrl", "Grek" })
+    var cultureItems = (new string[] { "latn", "tfng", "arab", "hebr", "cyrl", "grek" })
         .Select(c => new SelectListItem { Value = $"{pathBase}/{culture}/{c}/{url}", Text = c, Selected = c == script })
         .ToList();
 }​

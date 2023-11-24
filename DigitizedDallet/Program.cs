@@ -8,6 +8,8 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
@@ -22,9 +24,9 @@ builder.Services.AddMvc(options =>
 
 var supportedScripts
 #if DEBUG
-    = new string[] { "Latn", "Tfng", "Arab", "Hebr", "Cyrl", "Grek" };
+    = new string[] { "latn", "tfng", "arab", "hebr", "cyrl", "grek" };
 #else
-   = new string[] { "Latn" };
+   = new string[] { "latn" };
 #endif
 var defaultSupportedScript = supportedScripts.First();
 
