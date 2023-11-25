@@ -2,11 +2,30 @@
 @{  
     bool precedeWithSemicolon = false;
 }
-@if (Model.ImperativeForms.Any())
+@if (Model.Imperative != null)
 {
-    precedeWithSemicolon = true;<!--
- --><partial name="_Articles" for="ImperativeForms" /><!--
+        bool precedeWithComma = false;<!--
+ -->if (Model.Imperative.SecondPluralForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }
+        precedeWithComma = true;<!--
+    --><partial name="_ArticlesSeparatedBySlash" for="Imperative!.SecondPluralForms" /><!--
  -->}
+    if (Model.Imperative.SecondPluralFeminineForms.Any())
+    {
+        if (precedeWithComma)
+        {
+            <text>, </text>
+        }
+        precedeWithComma = true;<!--
+    --><partial name="_ArticlesSeparatedBySlash" for="Imperative!.SecondPluralFeminineForms" /><!--
+ -->}
+
+    precedeWithSemicolon = true;
+}
 @{
     var intensiveForms = Model.IntensiveThirdSingularForms
                 .Concat(Model.IntensiveThirdPluralForms)
