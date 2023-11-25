@@ -186,7 +186,8 @@ public static class HtmlAgilityPackExtensions
 
 public static class AmyagAspectExtensions
 {
-    public static List<string> SplitBySemicolon(this string? item) => item?.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList() ?? new List<string>();
+    private static readonly char[] separators = new char[] { ';', '/' };
+    public static List<string> SplitBySemicolon(this string? item) => item?.Split(separators, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList() ?? new List<string>();
 
     public static void TrimNegative(this AmyagAspect aspect)
     {
