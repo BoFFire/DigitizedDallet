@@ -105,23 +105,23 @@ app.Use(async (context, next) =>
 
     if (context.Request.Path.HasValue)
     {
-        var routedCulture = context.Request.RouteValues["culture"] as string;
-        if (routedCulture != null && supportedCultures.Contains(routedCulture))
+        if (context.Request.RouteValues["culture"] is string routedCulture 
+            && supportedCultures.Contains(routedCulture))
         {
             if (routedCulture != cookieOrBrowserCulture)
-            { 
+            {
                 context.SaveCookieCulture(routedCulture);
             }
         }
-        
-        var routedScript = context.Request.RouteValues["script"] as string;
-        if (routedScript != null && supportedScripts.Contains(routedScript))
+
+        if (context.Request.RouteValues["script"] is string routedScript 
+            && supportedScripts.Contains(routedScript))
         {
             if (routedScript != cookieScript)
             {
                 context.SaveCookieScript(routedScript);
             }
-        }      
+        }
     }
 
     await next();
