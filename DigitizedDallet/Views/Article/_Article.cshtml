@@ -2,11 +2,15 @@
 @model ArticleModel
 
 <h2>
-    @Model.Name.GetTransliteratedString(ViewBag.RequestedScript as string)    
+    @Model.Name.GetTransliteratedString(ViewBag.RequestedScript as string)<!--
+ -->@if (Model.HasDirectionalParticle ?? false)
+    {
+        <text>-d</text>
+    }
     @if (Model.Mark != null)
     {
         <font color="red">@Model.Mark</font>
-    }
+    }    
     @Model.GetHtmlDalletNotation()
     @if (Model.StandardizedForm != null)
     {
@@ -112,7 +116,13 @@
         @if (Model.VerbalNouns.Any())
         {
             <dt>@Localizer["$VerbalNouns"]</dt>                        
-            <dd><partial name="_Articles" for="VerbalNouns" /></dd>
+            <dd>
+                <partial name="_Articles" for="VerbalNouns" /><!--
+            -->@if (Model.HasMoreVerbalNouns ?? false) 
+                {
+                    <text>, etc.</text>
+                }
+            </dd>
         }
 
         @if (Model.PluralForms.Any())

@@ -3,7 +3,7 @@
 public class ReadmeModel
 {
     public DateTime LastModificationDate { get; set; }
-    public int DataModelVersion { get; set; } = 7;
+    public int DataModelVersion { get; set; } = 8;
     public string FileDescription { get; set; } = "Dallet's dictionary of Kabyle, digitized & structured";
     public string FileUrl { get; set; } = "https://github.com/sferhah/DigitizedDallet/blob/master/DigitizedDallet/wwwroot/dictionary.json";
 

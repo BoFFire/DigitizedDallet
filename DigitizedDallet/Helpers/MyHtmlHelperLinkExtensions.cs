@@ -24,6 +24,7 @@ public static class MyHtmlHelperLinkExtensions
         ArticleModel article,
         string? prefix = null,        
         bool withMark = true,
+        bool withDirectionalParticle = true,
         bool withNegative = false,
         bool withDallet = true,
         bool withDalletEdit = true,
@@ -36,23 +37,28 @@ public static class MyHtmlHelperLinkExtensions
                 nameof(ArticleController).Remove(nameof(ArticleController).Length - "Controller".Length),
                 new { name = article.Resolved.Name, guid = useGuid ? article.Resolved.Id : null }));
 
+        if (withDirectionalParticle && (article.Resolved.HasDirectionalParticle ?? false))
+        {
+            content.Append("-d");
+        }
+
         if (withMark && article.Resolved.Mark != null)
         {
             content.AppendHtml("""<font color ="red">""")
                 .Append(article.Resolved.Mark)
                 .AppendHtml("</font>");
-        }
+        }       
 
         if (withDallet)
         {   
-            content.AppendHtml(article.GetHtmlDalletNotation(prefix: prefix, withDalletEdit: withDalletEdit));
+            content.AppendHtml(article.GetHtmlDalletNotation(prefix: prefix, withDalletEdit: withDalletEdit, withDirectionalParticle : withDirectionalParticle));           
         }
 
         return content;
     }
 
 
-    public static IHtmlContent GetHtmlDalletNotation(this ArticleModel article, string? prefix = null, bool withDalletEdit = true)
+    public static IHtmlContent GetHtmlDalletNotation(this ArticleModel article, string? prefix = null, bool withDalletEdit = true, bool withDirectionalParticle = true)
     {
 #if !DEBUG
         withDalletEdit = false;
@@ -99,11 +105,13 @@ public static class MyHtmlHelperLinkExtensions
         }
         else if (article.Resolved.DalletNames.Any())
         {
+            var suffixedDirectionalParticle = withDirectionalParticle && (article.HasDirectionalParticle ?? false) ? "-ḋ" : string.Empty;            
+
             content.Append(" ");
             content.AppendHtml("<small>")
-                    .Append($"[{string.Join(" / ", article.Resolved.DalletNames.ToDalletNotation().Select(x => prefix + x))}]")
+                    .Append($"[{string.Join(" / ", article.Resolved.DalletNames.ToDalletNotation().Select(x => prefix + x + suffixedDirectionalParticle))}]")
                     .AppendHtml("</small>");
-        }
+        }       
 
         return content;
     }

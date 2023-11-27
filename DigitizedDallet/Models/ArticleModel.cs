@@ -23,9 +23,12 @@ public partial class ArticleModel
     public List<string> EtymologicalReferences { get; set; } = new List<string>();
     public string? See { get; set; }
 
-    public List<ConjugationModel> Conjugations { get; set; } = new List<ConjugationModel>();
+    public bool? HasDirectionalParticle { get; set; }
+    public List<ConjugationModel> Conjugations { get; set; } = new List<ConjugationModel>();    
 
     public List<ArticleModel> VerbalNouns { get; set; } = new List<ArticleModel>();
+    public bool? HasMoreVerbalNouns { get; set; }
+
     public List<ArticleModel> PluralForms { get; set; } = new List<ArticleModel>();
     public List<ArticleModel> FeminineForms { get; set; } = new List<ArticleModel>();
     public List<ArticleModel> FemininePluralForms { get; set; } = new List<ArticleModel>();    
