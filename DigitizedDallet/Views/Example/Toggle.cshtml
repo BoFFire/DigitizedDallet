@@ -40,10 +40,9 @@
             <td>              
                 <div id="@item.Id">             
                     <div style="display:none;">@item.Text!</div>
-                    @for (int i=0; i< item.New!.Length; i++)
+                    @for (int i = 0; i < item.Text!.Length; i++)
                     {<!--
-                        -->var c = item.New![i]; var c2 = item.Text![i]; var textColor = c==c2  ? "black" : "blue";<!--
-                        --><input type="button" value="@c" style="color: @textColor;padding: 0;border: none;background: none;font-size: 2.5em;" onclick="addDot(this)" /><!--
+                        --><input type="button" value="@item.Text![i]" style="color: black;padding: 0;border: none;background: none;font-size: 2.5em;" onclick="addDot(this)" /><!--
                     -->}
                 </div>
          

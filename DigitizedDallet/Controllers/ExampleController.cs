@@ -52,7 +52,6 @@ public class ExampleController : Controller
                 ArticleName = x.Name,
                 Id = y.Id,
                 Text = y.DalletText,
-                New = string.IsNullOrWhiteSpace(y.DalletTextNew) ? y.DalletText : y.DalletTextNew,
                 Checked = !string.IsNullOrWhiteSpace(y.DalletText),
                 Translation = y.Translation,
                 Literal = y.Literal,
@@ -125,7 +124,7 @@ public class ExampleController : Controller
             return NotFound();
         }
 
-        stored_example.DalletTextNew = example.Text;
+        stored_example.DalletText = example.Text!;
 
         DicoRepository.QuickSave();
 
@@ -156,7 +155,7 @@ public class ExampleController : Controller
                     Letter = article.Root.Letter.Name,
                     Root = article.Root.Name,
                     Entry = article.Name,
-                    Phonetic = example.DalletTextNew ?? example.DalletText,
+                    Phonetic = example.DalletText,
                     Fra = example.Translation,
                 }));
         }

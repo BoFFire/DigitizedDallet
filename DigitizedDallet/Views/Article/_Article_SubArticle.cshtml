@@ -33,7 +33,7 @@
 
         @if (meaning.Examples.Any())
         {
-            @await Html.PartialAsync("_ArticleMeaningExamples", Model.Resolved.Meanings.First())
+            @await Html.PartialAsync("_ArticleMeaningExamples", meaning)
         }
     }   
 }
