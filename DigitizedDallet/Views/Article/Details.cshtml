@@ -1,12 +1,20 @@
 ﻿@inject IStringLocalizer<SharedResources> Localizer
 @model IEnumerable<ArticleModel>
 @{
-    ViewBag.Title = Model.First().Name;
+    var first_article = Model.First();
+
+    ViewBag.Title = first_article.Name;
+
+    if (Model.Count() == 1)
+    {
+        ViewBag.Title += string.Join("", first_article.AllMeanings.SelectMany(x => x.Translations).Select(x => "  ‖  " + x));
+    }
+
     var entry_inf = Model.Count() > 1 ? "articles" : "article";
 }
 <br />
 
-<p>@(Model.Count()) @entry_inf for : <b>@Html.DisplayFor(model => model.First().Name)</b></p>
+<p>@(Model.Count()) @entry_inf for : <b>@Html.DisplayFor(model => first_article.Name)</b></p>
 
 
 @foreach (var item in Model)
